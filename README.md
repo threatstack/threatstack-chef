@@ -1,6 +1,8 @@
 Threat Stack Cookbook
 ================
 
+[![Build Status](https://travis-ci.org/threatstack/threatstack-chef.svg?branch=master)](https://travis-ci.org/threatstack/threatstack-chef)
+
 Chef recipes to deploy the Threat Stack server agent
 
 Requirements
