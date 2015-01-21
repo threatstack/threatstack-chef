@@ -3,6 +3,7 @@ AllCops:
     - spec/**/*
     - metadata.rb
     - Rakefile
+    - vendor/**
 
 LineLength:
   Enabled: false
