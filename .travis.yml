@@ -1,5 +1,8 @@
 language: ruby
 rvm:
-  - 2.1.0
+- 2.1.0
 script:
-  - bundle exec rake
+- bundle exec rake
+notifications:
+  slack:
+    secure: Kqp/g7ta+JzAklXhTIl+ZU+FqrdXJe7DNWuqDZXec4YLLB9pFR1MpUyW1kx+WBcb7Fc//w4Q+1NLn02Slg9ay1xkRkNVi1UInUk89ocqwPbsmESA/690fnRba+C7mW/6D3Z+C7AMPQeZszhcRVzX1xrH3b3xlvLMvyFk/UnQOMU=
