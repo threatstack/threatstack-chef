@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - spec/**/*
     - metadata.rb
+    - Rakefile
 
 LineLength:
   Enabled: false
