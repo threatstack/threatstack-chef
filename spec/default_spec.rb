@@ -12,6 +12,6 @@ describe 'threatstack::default' do
   end
 
   it 'executes the cloudsight setup' do
-    expect(chef_rum).to run_execute('cloudsight setup')
+    expect(chef_run).to run_execute('cloudsight setup')
   end
 end
