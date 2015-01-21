@@ -1,7 +1,12 @@
 Threat Stack Cookbook
 ================
 
-[![Build Status](https://travis-ci.org/threatstack/threatstack-chef.svg?branch=master)](https://travis-ci.org/threatstack/threatstack-chef)
+[![Build Status](https://travis-ci.org/threatstack/threatstack-chef.svg?branch=master)][travis]
+[![Cookbook Version](http://img.shields.io/cookbook/v/threatstack.svg)][cookbook]
+
+[travis]: https://travis-ci.org/threatstack/threatstack-chef
+[cookbook]: https://supermarket.chef.io/cookbooks/threatstack
+
 
 Chef recipes to deploy the Threat Stack server agent
 
