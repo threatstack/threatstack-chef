@@ -1,0 +1,7 @@
+AllCops:
+  Exclude:
+    - spec/**/*
+    - metadata.rb
+
+LineLength:
+  Enabled: false
