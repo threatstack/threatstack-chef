@@ -12,29 +12,9 @@ before_install:
 - gem update --system 2.1.11
 - gem --version
 env:
-- CHEF_VERSION="~> 10.34.6"
-- CHEF_VERSION="~> 11.18.0"
-- CHEF_VERSION="~> 12.0.3"
-matrix:
-  exclude:
-  - rvm: 1.9.3
-    env: CHEF_VERSION="~> 10.34.6"
-  - rvm: 1.9.3
-    env: CHEF_VERSION="~> 11.18.0"
-  - rvm: 1.9.3
-    env: CHEF_VERSION="~> 12.0.3"
-  - rvm: 2.0.0
-    env: CHEF_VERSION="~> 10.34.6"
-  - rvm: 2.0.0
-    env: CHEF_VERSION="~> 11.18.0"
-  - rvm: 2.0.0
-    env: CHEF_VERSION="~> 12.0.3"
-  - rvm: 2.1.0
-    env: CHEF_VERSION="~> 10.34.6"
-  - rvm: 2.1.0
-    env: CHEF_VERSION="~> 11.18.0"
-  - rvm: 2.1.0
-    env: CHEF_VERSION="~> 12.0.3"
+- CHEF_VERSION="= 10.34.6"
+- CHEF_VERSION="= 11.18.0"
+- CHEF_VERSION="= 12.0.3"
 
 notifications:
   slack:
