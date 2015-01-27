@@ -4,6 +4,7 @@ AllCops:
     - metadata.rb
     - Rakefile
     - vendor/**/*
+    - Gemfile
 
 LineLength:
   Enabled: false
