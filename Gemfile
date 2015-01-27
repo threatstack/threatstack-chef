@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 group :development, :unit_tests do
-  gem 'chef',       :require => false
   gem 'chefspec',   :require => false
   gem 'berkshelf',  :require => false
   gem 'rubocop',    :require => false

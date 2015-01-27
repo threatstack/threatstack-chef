@@ -11,7 +11,7 @@
 .kitchen.local.yml
 .rspec
 .yardopts
-
+Gemfile.lock
 .bundle/
 .cache/
 .kitchen/
