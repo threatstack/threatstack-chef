@@ -54,4 +54,6 @@ Usage
 
 3. (Optional) Set the `node['threatstack']['policy']` to define which policy will apply to this node (defaults to 'Default Policy')
 
-4. Add this recipe to your runlist or include in another recipe
+4. (Optional) Set the `node['threatstack']['hostname']` if you want to register the agent in the UI by a specific name (defaults to hostname)
+
+5. Add this recipe to your runlist or include in another recipe

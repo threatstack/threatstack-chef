@@ -22,3 +22,4 @@ default['threatstack']['version'] = nil
 default['threatstack']['pkg_action'] = :install
 default['threatstack']['deploy_key'] = nil
 default['threatstack']['policy'] = 'Default Policy'
+default['threatstack']['hostname'] = nil
