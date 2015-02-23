@@ -23,7 +23,7 @@ when 'debian'
     uri "#{node['threatstack']['repo']}/Ubuntu"
     distribution node['lsb']['codename']
     components ['main']
-    key 'https://www.threatstack.com/APT-GPG-KEY-THREATSTACK'
+    key 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
     action :add
   end
 
@@ -37,7 +37,7 @@ when 'rhel'
   yum_repository 'threatstack' do
     description 'Threat Stack'
     baseurl "#{node['threatstack']['repo']}/#{path}"
-    gpgkey 'https://www.threatstack.com/RPM-GPG-KEY-THREATSTACK'
+    gpgkey 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK'
     action :add
   end
 end
