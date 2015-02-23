@@ -15,7 +15,7 @@ describe 'threatstack::repo' do
         uri: 'https://pkg.threatstack.com/Ubuntu',
         distribution: 'lucid',
         components: ['main'],
-        key: 'https://www.threatstack.com/APT-GPG-KEY-THREATSTACK',
+        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK',
       )
     end
   end
@@ -34,7 +34,7 @@ describe 'threatstack::repo' do
         uri: 'https://pkg.threatstack.com/Ubuntu',
         distribution: 'precise',
         components: ['main'],
-        key: 'https://www.threatstack.com/APT-GPG-KEY-THREATSTACK',
+        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK',
       )
     end
   end
@@ -53,7 +53,7 @@ describe 'threatstack::repo' do
         uri: 'https://pkg.threatstack.com/Ubuntu',
         distribution: 'trusty',
         components: ['main'],
-        key: 'https://www.threatstack.com/APT-GPG-KEY-THREATSTACK',
+        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK',
       )
     end
   end
@@ -71,7 +71,7 @@ describe 'threatstack::repo' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
         baseurl: 'https://pkg.threatstack.com/CentOS',
-        gpgkey: 'https://www.threatstack.com/RPM-GPG-KEY-THREATSTACK',
+        gpgkey: 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK',
       )
     end
   end
@@ -89,7 +89,7 @@ describe 'threatstack::repo' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
         baseurl: 'https://pkg.threatstack.com/CentOS',
-        gpgkey: 'https://www.threatstack.com/RPM-GPG-KEY-THREATSTACK',
+        gpgkey: 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK',
       )
     end
   end
@@ -107,7 +107,7 @@ describe 'threatstack::repo' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
         baseurl: 'https://pkg.threatstack.com/Amazon',
-        gpgkey: 'https://www.threatstack.com/RPM-GPG-KEY-THREATSTACK',
+        gpgkey: 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK',
       )
     end
   end
