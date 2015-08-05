@@ -36,4 +36,6 @@ execute 'cloudsight setup' do
   command cmd
   action :run
   not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.secret') }
+  retries 3
+  timeout 60
 end
