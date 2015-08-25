@@ -21,5 +21,5 @@ default['threatstack']['repo'] = 'https://pkg.threatstack.com'
 default['threatstack']['version'] = nil
 default['threatstack']['pkg_action'] = :install
 default['threatstack']['deploy_key'] = nil
-default['threatstack']['policy'] = 'Default Policy'
+default['threatstack']['rulesets'] = ['Base Rule Set']
 default['threatstack']['hostname'] = nil

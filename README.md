@@ -52,7 +52,7 @@ Usage
 
 2. Add your deploy api key to the `node['threatstack']['deploy_key']` attribute at a higher precedence level. Using either a wrapper cookbook or role or databag
 
-3. (Optional) Set the `node['threatstack']['policy']` to define which policy will apply to this node (defaults to 'Default Policy')
+3. (Optional) Set or override `node['threatstack']['ruleset']` to define a list of rulesets will apply to this node (defaults to 'Base Rule Set')
 
 4. (Optional) Set the `node['threatstack']['hostname']` if you want to register the agent in the UI by a specific name (defaults to hostname)
 
