@@ -29,8 +29,11 @@ end
 # in the Threat Stack UI
 
 cmd = "cloudsight setup --deploy-key=#{node['threatstack']['deploy_key']} "
-cmd += "--policy='#{node['threatstack']['policy']}' " if node['threatstack']['policy']
 cmd += "--hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
+
+node['threatstack']['rulesets'].each do |r|
+  cmd += "--ruleset='#{r}' "
+end
 
 execute 'cloudsight setup' do
   command cmd
