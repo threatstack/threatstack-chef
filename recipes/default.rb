@@ -28,11 +28,11 @@ end
 # and if it's omitted then the agent will need to be approved
 # in the Threat Stack UI
 
-cmd = "cloudsight setup --deploy-key=#{node['threatstack']['deploy_key']} "
-cmd += "--hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
+cmd = "cloudsight setup --deploy-key=#{node['threatstack']['deploy_key']}"
+cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
 
 node['threatstack']['rulesets'].each do |r|
-  cmd += "--ruleset='#{r}' "
+  cmd += " --ruleset='#{r}'"
 end
 
 execute 'cloudsight setup' do

@@ -17,7 +17,7 @@ describe 'threatstack::default' do
 
   it 'executes the cloudsight setup' do
     expect(chef_run).to run_execute('cloudsight setup').with(
-      command: "cloudsight setup --deploy-key=ABCD1234 --ruleset='Base Rule Set' "
+      command: "cloudsight setup --deploy-key=ABCD1234 --ruleset='Base Rule Set'"
     )
   end
 end
