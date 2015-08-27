@@ -1,6 +1,29 @@
 require 'spec_helper'
 
-describe 'threatstack::repo' do
+describe 'threatstack::default' do
+  context 'debian-wheezy' do
+    let(:chef_run) do
+      runner =  ChefSpec::SoloRunner.new(
+        :platform => 'debian',
+        :version => '7.8'
+      )
+    runner.converge(described_recipe)
+    end
+
+    it 'installs the apt-transport-http package' do
+      expect(chef_run).to install_package('apt-transport-https')
+    end
+
+    it 'sets up the apt repository' do
+      expect(chef_run).to add_apt_repository('threatstack').with(
+        uri: 'https://pkg.threatstack.com/Ubuntu',
+        distribution: 'wheezy',
+        components: ['main'],
+        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK',
+      )
+    end
+  end
+
   context 'ubuntu-lucid' do
     let(:chef_run) do
       runner =  ChefSpec::SoloRunner.new(
@@ -111,6 +134,5 @@ describe 'threatstack::repo' do
       )
     end
   end
-
 
 end
