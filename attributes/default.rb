@@ -17,9 +17,9 @@
 # limitations under the License.
 #
 
-default['threatstack']['repo'] = 'https://pkg.threatstack.com'
 default['threatstack']['version'] = nil
 default['threatstack']['pkg_action'] = :install
 default['threatstack']['deploy_key'] = nil
 default['threatstack']['rulesets'] = ['Base Rule Set']
 default['threatstack']['hostname'] = nil
+default['threatstack']['ignore_failure'] = true

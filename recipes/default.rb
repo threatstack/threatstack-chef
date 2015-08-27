@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'threatstack::repo'
+include_recipe "threatstack::#{node['platform_family']}" if node['threatstack']['repo_enable']
 
 package 'threatstack-agent' do
   version node['threatstack']['version'] if node['threatstack']['version']
@@ -38,5 +38,6 @@ end
 execute 'cloudsight setup' do
   command cmd
   action :run
+  ignore_failure node['threatstack']['ignore_failure']
   not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.secret') }
 end
