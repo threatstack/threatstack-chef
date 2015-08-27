@@ -7,7 +7,7 @@ DEPENDENCIES
 
 GRAPH
   apt (2.6.1)
-  threatstack (1.3.1)
+  threatstack (1.4.0)
     apt (>= 0.0.0)
     yum (>= 0.0.0)
   yum (3.5.3)
