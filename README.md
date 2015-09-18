@@ -58,7 +58,11 @@ Attributes
 ==========
 
 `node['threatstack']['version']` - Set to pin to a specific Threat Stack agent release version
+
 `node['threatstack']['pkg_action']` - Set to `:upgrade` if you want to take the latest release (defaults to `:install`)
+
 `node['threatstack']['deploy_key']` - Override this with your deploy key for agent registration
+
 `node['threatstack']['rulesets']` - Set or override this with an array of rulesets to apply to the node
+
 `node['threatstack']['hostname']` - register the agent in the UI by a specific name (defaults to hostname)
