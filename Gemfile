@@ -6,7 +6,7 @@ gem 'rubocop'
 gem 'foodcritic'
 gem 'serverspec'
 gem 'test-kitchen'
-gem 'parseconfig'
+gem 'stove'
 
 if chefversion = ENV['CHEF_VERSION']
   gem 'chef', chefversion
