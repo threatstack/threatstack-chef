@@ -52,8 +52,13 @@ Usage
 
 2. Add your deploy api key to the `node['threatstack']['deploy_key']` attribute at a higher precedence level. Using either a wrapper cookbook or role or databag
 
-3. (Optional) Set or override `node['threatstack']['ruleset']` to define a list of rulesets will apply to this node (defaults to 'Base Rule Set')
+3. Add this recipe to your runlist or include in another recipe
 
-4. (Optional) Set the `node['threatstack']['hostname']` if you want to register the agent in the UI by a specific name (defaults to hostname)
+Attributes
+==========
 
-5. Add this recipe to your runlist or include in another recipe
+`node['threatstack']['version']` - Set to pin to a specific Threat Stack agent release version
+`node['threatstack']['pkg_action']` - Set to `:upgrade` if you want to take the latest release (defaults to `:install`)
+`node['threatstack']['deploy_key']` - Override this with your deploy key for agent registration
+`node['threatstack']['rulesets']` - Set or override this with an array of rulesets to apply to the node
+`node['threatstack']['hostname']` - register the agent in the UI by a specific name (defaults to hostname)

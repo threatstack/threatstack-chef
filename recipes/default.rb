@@ -39,5 +39,5 @@ execute 'cloudsight setup' do
   command cmd
   action :run
   ignore_failure node['threatstack']['ignore_failure']
-  not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.secret') }
+  not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.audit') }
 end
