@@ -24,9 +24,9 @@ package 'threatstack-agent' do
   action node['threatstack']['pkg_action']
 end
 
-# Register the Threat Stack agent - Policy is not required
-# and if it's omitted then the agent will need to be approved
-# in the Threat Stack UI
+# Register the Threat Stack agent - Rulesets are not required
+# and if it's omitted then the agent will be placed into a 
+# default rule set (most like 'Base Rule Set')
 
 cmd = "cloudsight setup --deploy-key=#{node['threatstack']['deploy_key']}"
 cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
