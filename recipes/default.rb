@@ -25,7 +25,7 @@ package 'threatstack-agent' do
 end
 
 # Register the Threat Stack agent - Rulesets are not required
-# and if it's omitted then the agent will be placed into a 
+# and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
 
 cmd = "cloudsight setup --deploy-key=#{node['threatstack']['deploy_key']}"
