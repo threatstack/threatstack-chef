@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: threatstack
-# Recipe:: repo
+# Recipe:: debian
 #
 # Copyright 2014-2015, Threat Stack
 #
@@ -17,27 +17,12 @@
 # limitations under the License.
 #
 
-case node['platform_family']
-when 'debian'
-  apt_repository 'threatstack' do
-    uri "#{node['threatstack']['repo']}/Ubuntu"
-    distribution node['lsb']['codename']
-    components ['main']
-    key 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
-    action :add
-  end
+package 'apt-transport-https'
 
-when 'rhel'
-  if node['platform'] == 'amazon'
-    path = 'Amazon'
-  else
-    path = 'CentOS'
-  end
-
-  yum_repository 'threatstack' do
-    description 'Threat Stack'
-    baseurl "#{node['threatstack']['repo']}/#{path}"
-    gpgkey 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK'
-    action :add
-  end
+apt_repository 'threatstack' do
+  uri node['threatstack']['repo']['url']
+  distribution node['threatstack']['repo']['dist']
+  components ['main']
+  key node['threatstack']['repo']['key']
+  action :add
 end

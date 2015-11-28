@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: threatstack
-# Attributes:: default
+# Recipe:: rhel
 #
 # Copyright 2014-2015, Threat Stack
 #
@@ -15,11 +15,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-default['threatstack']['version'] = nil
-default['threatstack']['pkg_action'] = :install
-default['threatstack']['deploy_key'] = nil
-default['threatstack']['rulesets'] = ['Base Rule Set']
-default['threatstack']['hostname'] = nil
-default['threatstack']['ignore_failure'] = true
+yum_repository 'threatstack' do
+  description 'Threat Stack'
+  baseurl node['threatstack']['repo']['url']
+  gpgkey node['threatstack']['repo']['key']
+  action :add
+end
