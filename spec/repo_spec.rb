@@ -6,7 +6,9 @@ describe 'threatstack::default' do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
         version: '7.8'
-      )
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end
       runner.converge(described_recipe)
     end
 
@@ -29,7 +31,9 @@ describe 'threatstack::default' do
       runner = ChefSpec::SoloRunner.new(
         platform: 'ubuntu',
         version: '10.04'
-      )
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end
       runner.converge(described_recipe)
     end
 
@@ -48,7 +52,9 @@ describe 'threatstack::default' do
       runner = ChefSpec::SoloRunner.new(
         platform: 'ubuntu',
         version: '12.04'
-      )
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end
       runner.converge(described_recipe)
     end
 
@@ -67,7 +73,9 @@ describe 'threatstack::default' do
       runner = ChefSpec::SoloRunner.new(
         platform: 'ubuntu',
         version: '14.04'
-      )
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end
       runner.converge(described_recipe)
     end
 
@@ -86,7 +94,9 @@ describe 'threatstack::default' do
       runner = ChefSpec::SoloRunner.new(
         platform: 'redhat',
         version: '6.5'
-      )
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end
       runner.converge(described_recipe)
     end
 
@@ -104,7 +114,9 @@ describe 'threatstack::default' do
       runner = ChefSpec::SoloRunner.new(
         platform: 'centos',
         version: '6.5'
-      )
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end
       runner.converge(described_recipe)
     end
 
@@ -122,7 +134,9 @@ describe 'threatstack::default' do
       runner = ChefSpec::SoloRunner.new(
         platform: 'amazon',
         version: '2012.09'
-      )
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end
       runner.converge(described_recipe)
     end
 

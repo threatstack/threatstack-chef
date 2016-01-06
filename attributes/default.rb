@@ -19,7 +19,12 @@
 
 default['threatstack']['version'] = nil
 default['threatstack']['pkg_action'] = :install
-default['threatstack']['deploy_key'] = nil
 default['threatstack']['rulesets'] = ['Base Rule Set']
 default['threatstack']['hostname'] = nil
 default['threatstack']['ignore_failure'] = true
+
+# You can set the deploy key directly, or use the encrypted databag
+# parameters below. The value searched for will be 'deploy_key'
+default['threatstack']['deploy_key'] = nil
+default['threatstack']['data_bag_name'] = 'threatstack'
+default['threatstack']['data_bag_item'] = 'api_keys'

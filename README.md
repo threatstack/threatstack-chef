@@ -53,7 +53,6 @@ Usage
 2. Add your deploy api key. The recommended way is to use an encrypted databag
 with name and item specified by the corresponding attributes. The cookbook will
 use the `'deploy_key'` value from the databag by default.
-
 You can also set the key directly or using a wrapper cookbook in the `node['threatstack']['deploy_key']` attribute.
 Setting the key will disable the encrypted data bag lookup.
 
