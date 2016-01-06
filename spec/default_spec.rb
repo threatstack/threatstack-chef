@@ -4,7 +4,7 @@ describe 'threatstack::default' do
   context 'single-ruleset-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = "ABCD1234"
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
     end
 
@@ -18,8 +18,8 @@ describe 'threatstack::default' do
   context 'multi-ruleset-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = "ABCD1234"
-        node.set['threatstack']['rulesets'] = ['base', 'ubuntu', 'cassandra']
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.set['threatstack']['rulesets'] = %w(base ubuntu cassandra)
       end.converge(described_recipe)
     end
 
@@ -33,8 +33,8 @@ describe 'threatstack::default' do
   context 'hostname-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = "ABCD1234"
-        node.set['threatstack']['hostname'] = "test_server-i-abc123"
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.set['threatstack']['hostname'] = 'test_server-i-abc123'
       end.converge(described_recipe)
     end
 
@@ -48,8 +48,8 @@ describe 'threatstack::default' do
   context 'install-apt-package' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(
-        :platform => 'ubuntu',
-        :version => '14.04'
+        platform: 'ubuntu',
+        version: '14.04'
       ).converge(described_recipe)
     end
 
@@ -61,8 +61,8 @@ describe 'threatstack::default' do
   context 'install-yum-package' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(
-        :platform => 'redhat',
-        :version => '6.6'
+        platform: 'redhat',
+        version: '6.6'
       ).converge(described_recipe)
     end
 
