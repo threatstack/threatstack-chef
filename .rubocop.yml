@@ -1,6 +1,5 @@
 AllCops:
   Exclude:
-    - spec/**/*
     - metadata.rb
     - Rakefile
     - vendor/**/*
