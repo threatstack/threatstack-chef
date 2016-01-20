@@ -3,14 +3,31 @@ require 'spec_helper'
 describe 'threatstack::default' do
   context 'single-ruleset-test' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
-      end.converge(described_recipe)
+      ChefSpec::SoloRunner.new.converge(described_recipe)
+    end
+
+    before do
+      contents = { 'deploy_key' => 'ABCD1234' }
+      allow(Chef::EncryptedDataBagItem).to receive(:load).with('threatstack', 'api_keys').and_return(contents)
     end
 
     it 'executes the cloudsight setup' do
       expect(chef_run).to run_execute('cloudsight setup').with(
         command: "cloudsight setup --deploy-key=ABCD1234 --ruleset='Base Rule Set'"
+      )
+    end
+  end
+
+  context 'explicit-deploy-key' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.set['threatstack']['deploy_key'] = 'EFGH5678'
+      end.converge(described_recipe)
+    end
+
+    it 'prefers the explicit deploy_key when one is specified' do
+      expect(chef_run).to run_execute('cloudsight setup').with(
+        command: "cloudsight setup --deploy-key=EFGH5678 --ruleset='Base Rule Set'"
       )
     end
   end
@@ -50,7 +67,9 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new(
         platform: 'ubuntu',
         version: '14.04'
-      ).converge(described_recipe)
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end.converge(described_recipe)
     end
 
     it 'installs the threatstack-agent package on ubuntu' do
@@ -63,7 +82,9 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new(
         platform: 'redhat',
         version: '6.6'
-      ).converge(described_recipe)
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end.converge(described_recipe)
     end
 
     it 'installs the threatstack-agent package on redhat' do

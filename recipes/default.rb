@@ -24,11 +24,20 @@ package 'threatstack-agent' do
   action node['threatstack']['pkg_action']
 end
 
+if node['threatstack']['deploy_key'].nil?
+  deploy_key = Chef::EncryptedDataBagItem.load(
+    node['threatstack']['data_bag_name'],
+    node['threatstack']['data_bag_item']
+  )['deploy_key']
+else
+  deploy_key = node['threatstack']['deploy_key']
+end
+
 # Register the Threat Stack agent - Rulesets are not required
 # and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
 
-cmd = "cloudsight setup --deploy-key=#{node['threatstack']['deploy_key']}"
+cmd = "cloudsight setup --deploy-key=#{deploy_key}"
 cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
 
 node['threatstack']['rulesets'].each do |r|
@@ -39,5 +48,6 @@ execute 'cloudsight setup' do
   command cmd
   action :run
   ignore_failure node['threatstack']['ignore_failure']
+  sensitive true
   not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.audit') }
 end
