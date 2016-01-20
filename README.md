@@ -73,7 +73,7 @@ Attributes
 
 `node['threatstack']['rulesets']` - Set or override this with an array of rulesets to apply to the node
 
-`node['threatstack']['hostname']` - register the agent in the UI by a specific name (defaults to hostname)i
+`node['threatstack']['hostname']` - register the agent in the UI by a specific name (defaults to hostname)
 
 Encrypted Data Bag Contents
 ===========================
