@@ -19,7 +19,9 @@
 
 default['threatstack']['version'] = nil
 default['threatstack']['pkg_action'] = :install
-default['threatstack']['rulesets'] = ['Base Rule Set']
+# If no rulesets are specified the agent will register to the default
+# rule set, according to a comment in recipes/default.rb
+default['threatstack']['rulesets'] = []
 default['threatstack']['hostname'] = nil
 default['threatstack']['ignore_failure'] = true
 
