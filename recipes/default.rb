@@ -48,6 +48,8 @@ execute 'cloudsight setup' do
   command cmd
   action :run
   ignore_failure node['threatstack']['ignore_failure']
-  sensitive true
+  if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
+    sensitive true
+  end
   not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.audit') }
 end
