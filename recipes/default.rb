@@ -52,4 +52,6 @@ execute 'cloudsight setup' do
     sensitive true
   end
   not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.audit') }
+  retries 3
+  timeout 60
 end
