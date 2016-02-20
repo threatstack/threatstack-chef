@@ -44,6 +44,29 @@ node['threatstack']['rulesets'].each do |r|
   cmd += " --ruleset='#{r}'"
 end
 
+# This file is maintained because the list of rulesets is not readily accessible
+# in a ThreatStack agent install, and we want to re-run the registration
+# process when the ruleset list changes.
+file '/opt/threatstack/etc/active_rulesets.txt' do
+  content node['threatstack']['rulesets'].join("\n").concat("\n")
+  mode 0644
+  owner 'root'
+  group 'root'
+end
+
+# deleting this file allows cloudsight to be reconfigured after installation
+file '/opt/threatstack/cloudsight/config/.secret' do
+  action :nothing
+  subscribes :delete, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+end
+
+# Only if we are about to reconfigure a running instance
+execute 'stop threatstack services' do
+  command '/usr/bin/cloudsight stop'
+  action :nothing
+  subscribes :run, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+end
+
 execute 'cloudsight setup' do
   command cmd
   action :run
@@ -51,5 +74,8 @@ execute 'cloudsight setup' do
   if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
     sensitive true
   end
-  not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.audit') }
+  not_if do
+    ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
+      ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
+  end
 end
