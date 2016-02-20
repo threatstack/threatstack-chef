@@ -70,6 +70,8 @@ end
 execute 'cloudsight setup' do
   command cmd
   action :run
+  retries 3
+  timeout 60
   ignore_failure node['threatstack']['ignore_failure']
   if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
     sensitive true
