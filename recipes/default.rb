@@ -24,20 +24,60 @@ package 'threatstack-agent' do
   action node['threatstack']['pkg_action']
 end
 
+if node['threatstack']['deploy_key'].nil?
+  deploy_key = Chef::EncryptedDataBagItem.load(
+    node['threatstack']['data_bag_name'],
+    node['threatstack']['data_bag_item']
+  )['deploy_key']
+else
+  deploy_key = node['threatstack']['deploy_key']
+end
+
 # Register the Threat Stack agent - Rulesets are not required
 # and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
 
-cmd = "cloudsight setup --deploy-key=#{node['threatstack']['deploy_key']}"
+cmd = "cloudsight setup --deploy-key=#{deploy_key}"
 cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
 
 node['threatstack']['rulesets'].each do |r|
   cmd += " --ruleset='#{r}'"
 end
 
+# This file is maintained because the list of rulesets is not readily accessible
+# in a ThreatStack agent install, and we want to re-run the registration
+# process when the ruleset list changes.
+file '/opt/threatstack/etc/active_rulesets.txt' do
+  content node['threatstack']['rulesets'].join("\n").concat("\n")
+  mode 0644
+  owner 'root'
+  group 'root'
+end
+
+# deleting this file allows cloudsight to be reconfigured after installation
+file '/opt/threatstack/cloudsight/config/.secret' do
+  action :nothing
+  subscribes :delete, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+end
+
+# Only if we are about to reconfigure a running instance
+execute 'stop threatstack services' do
+  command '/usr/bin/cloudsight stop'
+  action :nothing
+  subscribes :run, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+end
+
 execute 'cloudsight setup' do
   command cmd
   action :run
+  retries 3
+  timeout 60
   ignore_failure node['threatstack']['ignore_failure']
-  not_if { ::File.exist?('/opt/threatstack/cloudsight/config/.audit') }
+  if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
+    sensitive true
+  end
+  not_if do
+    ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
+      ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
+  end
 end
