@@ -1,15 +1,15 @@
-name             'threatstack'
-maintainer       'Threat Stack'
+name 'threatstack'
+maintainer 'Threat Stack'
 maintainer_email 'support@threatstack.com'
-license          'Apache 2.0'
-description      'Installs/Configures Threat Stack cloudsight components'
+license 'Apache 2.0'
+description 'Installs/Configures Threat Stack cloudsight components'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.6.0'
+version '1.6.1'
 
 supports 'amazon'
 supports 'centos'
 supports 'redhat'
 supports 'ubuntu'
 
-depends  'apt'
-depends  'yum'
+depends 'apt'
+depends 'yum'
