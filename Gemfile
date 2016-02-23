@@ -8,8 +8,8 @@ gem 'serverspec', '= 2.24.0'
 gem 'stove', '= 3.2.7'
 gem 'test-kitchen'
 
-if chefversion = ENV['CHEF_VERSION']
-  gem 'chef', chefversion
+if ENV['CHEF_VERSION']
+  gem 'chef', ENV['CHEF_VERSION']
 else
   gem 'chef'
 end
