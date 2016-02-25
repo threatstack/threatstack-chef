@@ -1,9 +1,11 @@
 AllCops:
   Exclude:
-    - metadata.rb
     - Rakefile
     - vendor/**/*
-    - Gemfile
 
 LineLength:
   Enabled: false
+
+HashSyntax:
+  EnforcedStyle: ruby19
+
