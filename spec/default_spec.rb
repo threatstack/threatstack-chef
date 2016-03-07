@@ -142,4 +142,26 @@ describe 'threatstack::default' do
       expect(chef_run).to install_package('threatstack-agent')
     end
   end
+
+  context 'uninstall-test' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.set['threatstack']['pkg_action'] = :remove
+      end.converge(described_recipe)
+    end
+
+    before do
+      contents = { 'deploy_key' => 'ABCD1234' }
+      allow(Chef::EncryptedDataBagItem).to receive(:load).with('threatstack', 'api_keys').and_return(contents)
+    end
+
+    it 'uninstalls the package' do
+      expect(chef_run).to remove_package('threatstack-agent')
+    end
+
+    it 'does not run unnecessary actions' do
+      expect(chef_run).to_not create_file('/opt/threatstack/etc/active_rulesets.txt')
+      expect(chef_run).to_not run_execute('cloudsight setup')
+    end
+  end
 end
