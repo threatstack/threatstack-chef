@@ -16,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 include_recipe "threatstack::#{node['platform_family']}" if node['threatstack']['repo_enable']
 
 package 'threatstack-agent' do
@@ -44,7 +43,9 @@ node['threatstack']['rulesets'].each do |r|
   cmd += " --ruleset='#{r}'"
 end
 
-unless [:remove, :purge].include? node['threatstack']['pkg_action']
+# If the attributes are specified using YAML, there appears to be no way
+# to get back to symbols. The package resource has no problem with that.
+unless [:remove, :purge, 'remove', 'purge'].include? node['threatstack']['pkg_action']
   # This file is maintained because the list of rulesets is not readily accessible
   # in a ThreatStack agent install, and we want to re-run the registration
   # process when the ruleset list changes.
