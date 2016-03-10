@@ -24,14 +24,14 @@ package 'threatstack-agent' do
   action node['threatstack']['pkg_action']
 end
 
-if node['threatstack']['deploy_key'].nil?
-  deploy_key = Chef::EncryptedDataBagItem.load(
-    node['threatstack']['data_bag_name'],
-    node['threatstack']['data_bag_item']
-  )['deploy_key']
-else
-  deploy_key = node['threatstack']['deploy_key']
-end
+deploy_key = if node['threatstack']['deploy_key'].nil?
+               Chef::EncryptedDataBagItem.load(
+                 node['threatstack']['data_bag_name'],
+                 node['threatstack']['data_bag_item']
+               )['deploy_key']
+             else
+               node['threatstack']['deploy_key']
+             end
 
 # Register the Threat Stack agent - Rulesets are not required
 # and if it's omitted then the agent will be placed into a

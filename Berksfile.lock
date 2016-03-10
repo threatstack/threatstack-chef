@@ -6,8 +6,8 @@ DEPENDENCIES
   yum
 
 GRAPH
-  apt (2.6.1)
+  apt (2.9.2)
   threatstack (1.6.0)
     apt (>= 0.0.0)
     yum (>= 0.0.0)
-  yum (3.5.3)
+  yum (3.8.2)
