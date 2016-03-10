@@ -21,7 +21,7 @@ default['threatstack']['version'] = nil
 default['threatstack']['pkg_action'] = :install
 # If no rulesets are specified the agent will register to the default
 # rule set, according to a comment in recipes/default.rb
-default['threatstack']['rulesets'] = ['Base Rule Set', 'Threat Intelligence Rule Set']
+default['threatstack']['rulesets'] = ['Base Rule Set', 'CloudTrail Base Rule Set', 'Docker Rule Set', 'Threat Intelligence Rule Set']
 default['threatstack']['hostname'] = nil
 default['threatstack']['ignore_failure'] = true
 
