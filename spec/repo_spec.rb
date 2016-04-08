@@ -104,7 +104,7 @@ describe 'threatstack::default' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
         baseurl: 'https://pkg.threatstack.com/CentOS',
-        gpgkey: 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK'
+        gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
   end
@@ -124,7 +124,7 @@ describe 'threatstack::default' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
         baseurl: 'https://pkg.threatstack.com/CentOS',
-        gpgkey: 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK'
+        gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
   end
@@ -144,7 +144,7 @@ describe 'threatstack::default' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
         baseurl: 'https://pkg.threatstack.com/Amazon',
-        gpgkey: 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK'
+        gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
   end
