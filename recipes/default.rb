@@ -67,17 +67,19 @@ execute 'stop threatstack services' do
   subscribes :run, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
 end
 
-execute 'cloudsight setup' do
-  command cmd
-  action :run
-  retries 3
-  timeout 60
-  ignore_failure node['threatstack']['ignore_failure']
-  if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
-    sensitive true
-  end
-  not_if do
-    ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
-      ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
+if node['threatstack']['configure_agent']
+  execute 'cloudsight setup' do
+    command cmd
+    action :run
+    retries 3
+    timeout 60
+    ignore_failure node['threatstack']['ignore_failure']
+    if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
+      sensitive true
+    end
+    not_if do
+      ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
+        ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
+    end
   end
 end
