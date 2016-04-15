@@ -30,3 +30,7 @@ default['threatstack']['ignore_failure'] = true
 default['threatstack']['deploy_key'] = nil
 default['threatstack']['data_bag_name'] = 'threatstack'
 default['threatstack']['data_bag_item'] = 'api_keys'
+
+# Control the configuration of the Threat Stack agent.  Useful when installing
+# agent into images.
+default['threatstack']['configure_agent'] = true
