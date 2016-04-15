@@ -34,3 +34,5 @@ default['threatstack']['data_bag_item'] = 'api_keys'
 # Control the configuration of the Threat Stack agent.  Useful when installing
 # agent into images.
 default['threatstack']['configure_agent'] = true
+# Pass aditional arguments to the agent during setup
+default['threatstack']['agent_extra_args'] = ''
