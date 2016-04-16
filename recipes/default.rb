@@ -39,7 +39,7 @@ end
 
 cmd = "cloudsight setup --deploy-key=#{deploy_key}"
 cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
-cmd += " #{node['threatstack']['agent_extra_args']}"
+cmd += " #{node['threatstack']['agent_extra_args']}" if node['threatstack']['agent_extra_args'] != ''
 
 node['threatstack']['rulesets'].each do |r|
   cmd += " --ruleset='#{r}'"
