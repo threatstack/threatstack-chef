@@ -98,6 +98,21 @@ describe 'threatstack::default' do
     end
   end
 
+  context 'agent-extra-args' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.set['threatstack']['agent_extra_args'] = '--foo=bar'
+      end.converge(described_recipe)
+    end
+
+    it 'executes the cloudsight setup with a configured hostname' do
+      expect(chef_run).to run_execute('cloudsight setup').with(
+        command: 'cloudsight setup --deploy-key=ABCD1234 --foo=bar'
+      )
+    end
+  end
+
   context 'hostname-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
