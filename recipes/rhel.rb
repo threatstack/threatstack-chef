@@ -20,7 +20,7 @@ remote_file node['threatstack']['repo']['key_file'] do
   action :create
   owner 'root'
   group 'root'
-  mode '0755'
+  mode '0644'
   source node['threatstack']['repo']['key']
 end
 
