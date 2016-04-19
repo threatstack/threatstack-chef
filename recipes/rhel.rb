@@ -16,9 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-execute 'ts-gpg-fetch' do
-  command "wget #{node['threatstack']['repo']['key']} -O #{node['threatstack']['repo']['key']}"
-  creates node['threatstack']['repo']['key_file_uri']
+remote_file node['threatstack']['repo']['key_file'] do
+  action :create
+  owner 'root'
+  group 'root'
+  mode '0755'
+  source node['threatstack']['repo']['key']
 end
 
 yum_repository 'threatstack' do
