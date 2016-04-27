@@ -36,3 +36,4 @@ default['threatstack']['data_bag_item'] = 'api_keys'
 default['threatstack']['configure_agent'] = true
 # Pass aditional arguments to the agent during setup
 default['threatstack']['agent_extra_args'] = ''
+default['threatstack']['agent_config_args'] = nil

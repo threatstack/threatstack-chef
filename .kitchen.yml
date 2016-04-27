@@ -26,3 +26,5 @@ suites:
         compile_time_update: true
       threatstack:
         deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : 'ts_deploy_key' %>
+        agent_config_args: <%= ENV['TS_CONFIG_ARGS'] %>
+
