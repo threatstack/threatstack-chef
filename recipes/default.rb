@@ -107,5 +107,5 @@ end
 
 service 'cloudsight' do
   action :enable
-  supports :restart => true
+  supports restart: true
 end
