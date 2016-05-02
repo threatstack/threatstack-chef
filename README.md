@@ -75,6 +75,8 @@ Attributes
 
 `node['threatstack']['hostname']` - register the agent in the UI by a specific name (defaults to hostname)
 
+`node['threatstack']['agent_config_args']` - `cloudsight config` argument string to enable platform features.
+
 Encrypted Data Bag Contents
 ===========================
 `deploy_key` - the deploy key for agent registration.
