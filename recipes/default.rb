@@ -83,4 +83,29 @@ if node['threatstack']['configure_agent']
         ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
     end
   end
+  if node['threatstack']['agent_config_args']
+    file '/opt/threatstack/cloudsight/config/.config_args' do
+      owner 'root'
+      group 'root'
+      mode 0644
+      content node['threatstack']['agent_config_args']
+      notifies :run, 'execute[cloudsight configure]'
+    end
+
+    execute 'cloudsight configure' do
+      command "cloudsight configure #{node['threatstack']['agent_config_args']}"
+      action :run
+      retries 3
+      timeout 60
+      if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
+        sensitive true
+      end
+      notifies :restart, 'service[cloudsight]'
+    end
+  end
+end
+
+service 'cloudsight' do
+  action :enable
+  supports restart: true
 end
