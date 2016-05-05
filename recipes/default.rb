@@ -94,7 +94,7 @@ if node['threatstack']['configure_agent']
 
     execute 'cloudsight configure' do
       command "cloudsight configure #{node['threatstack']['agent_config_args']}"
-      action :run
+      action :nothing
       retries 3
       timeout 60
       if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
