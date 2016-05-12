@@ -93,7 +93,7 @@ if node['threatstack']['configure_agent']
     end
 
     execute 'cloudsight configure' do
-      command "cloudsight configure #{node['threatstack']['agent_config_args']}"
+      command "cloudsight config #{node['threatstack']['agent_config_args']}"
       action :nothing
       retries 3
       timeout 60
