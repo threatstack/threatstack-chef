@@ -100,6 +100,10 @@ describe 'threatstack::default' do
       runner.converge(described_recipe)
     end
 
+    it 'downloads the threatstack repo key' do
+      expect(chef_run).to create_remote_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK')
+    end
+
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
@@ -120,6 +124,10 @@ describe 'threatstack::default' do
       runner.converge(described_recipe)
     end
 
+    it 'downloads the threatstack repo key' do
+      expect(chef_run).to create_remote_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK')
+    end
+
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
@@ -138,6 +146,10 @@ describe 'threatstack::default' do
         node.set['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
+    end
+
+    it 'downloads the threatstack repo key' do
+      expect(chef_run).to create_remote_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK')
     end
 
     it 'sets up the yum repository' do
