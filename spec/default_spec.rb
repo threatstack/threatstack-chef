@@ -128,6 +128,21 @@ describe 'threatstack::default' do
     end
   end
 
+  context 'enable-ts-service' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(
+        platform: 'ubuntu',
+        version: '14.04'
+      ) do |node|
+        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+      end.converge(described_recipe)
+    end
+
+    it 'enables the threatstack-agent service' do
+      expect(chef_run).to enable_service('cloudsight')
+    end
+  end
+
   context 'install-apt-package' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(
