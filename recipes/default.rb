@@ -16,10 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+include_recipe "threatstack::#{node['platform_family']}" if node['threatstack']['repo_enable']
+
+# Handle backwards compatibility from when we just passed a string to
+# `cloudsight config`
+if node['threatstack']['agent_config_args'].is_a? String
+  agent_config_args = node['threatstack']['agent_config_args'].split(' ')
+else
+  agent_config_args = node['threatstack']['agent_config_args']
+end
 
 agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 
-include_recipe "threatstack::#{node['platform_family']}" if node['threatstack']['repo_enable']
 
 package 'threatstack-agent' do
   version node['threatstack']['version'] if node['threatstack']['version']
@@ -39,8 +47,7 @@ end
 # and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
 cmd = ''
-if ! node['threatstack']['agent_config_args'].nil?
-  agent_config_args = node['threatstack']['agent_config_args'].split(' ')
+if ! agent_config_args.empty?
   agent_config_args.each do |arg|
     cmd += "cloudsight config #{arg} ;"
   end
@@ -82,10 +89,8 @@ end
 if node['threatstack']['configure_agent']
 
   # Need to run `cloudsight config` before we register agent.
-  if node['threatstack']['agent_config_args']
+  if ! agent_config_args.empty?
     require 'json'
-
-    agent_config_args = node['threatstack']['agent_config_args'].split(' ')
 
     # We can only set one argument at a time to build a string of `cloudsight
     # config` commands per argument.
