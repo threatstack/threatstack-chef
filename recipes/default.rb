@@ -88,7 +88,24 @@ end
 
 if node['threatstack']['configure_agent']
 
-  # Need to run `cloudsight config` before we register agent.
+  # `cloudsight setup` resource runs `cloudsight config` if there is stuff to
+  # configure.
+  execute 'cloudsight setup' do
+    command cmd
+    action :run
+    retries 3
+    timeout 60
+    ignore_failure node['threatstack']['ignore_failure']
+    if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
+      sensitive true
+    end
+    not_if do
+      ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
+        ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
+    end
+  end
+
+  # This block is for reconfiguring the agent after setup has been completed.
   if ! agent_config_args.empty?
     require 'json'
 
@@ -123,21 +140,6 @@ if node['threatstack']['configure_agent']
         end
       end
       notifies :restart, 'service[cloudsight]'
-    end
-  end
-
-  execute 'cloudsight setup' do
-    command cmd
-    action :run
-    retries 3
-    timeout 60
-    ignore_failure node['threatstack']['ignore_failure']
-    if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
-      sensitive true
-    end
-    not_if do
-      ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
-        ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
     end
   end
 end
