@@ -16,8 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 include_recipe "threatstack::#{node['platform_family']}" if node['threatstack']['repo_enable']
+
+# Handle backwards compatibility from when we just passed a string to
+# `cloudsight config`
+if node['threatstack']['agent_config_args'].is_a? String
+  agent_config_args = node['threatstack']['agent_config_args'].split(' ')
+else
+  agent_config_args = node['threatstack']['agent_config_args']
+end
+
+agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 
 package 'threatstack-agent' do
   version node['threatstack']['version'] if node['threatstack']['version']
@@ -36,39 +45,50 @@ end
 # Register the Threat Stack agent - Rulesets are not required
 # and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
-
-cmd = "cloudsight setup --deploy-key=#{deploy_key}"
+cmd = ''
+unless agent_config_args.empty?
+  agent_config_args.each do |arg|
+    cmd += "cloudsight config #{arg} ;"
+  end
+end
+cmd += "cloudsight setup --deploy-key=#{deploy_key}"
 cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
 cmd += " #{node['threatstack']['agent_extra_args']}" if node['threatstack']['agent_extra_args'] != ''
 
-node['threatstack']['rulesets'].each do |r|
-  cmd += " --ruleset='#{r}'"
-end
+# Handle ruleset management via here.
+unless node['threatstack']['rulesets'].empty?
+  node['threatstack']['rulesets'].each do |r|
+    cmd += " --ruleset='#{r}'"
 
-# This file is maintained because the list of rulesets is not readily accessible
-# in a ThreatStack agent install, and we want to re-run the registration
-# process when the ruleset list changes.
-file '/opt/threatstack/etc/active_rulesets.txt' do
-  content node['threatstack']['rulesets'].join("\n").concat("\n")
-  mode 0644
-  owner 'root'
-  group 'root'
-end
+    # This file is maintained because the list of rulesets is not readily accessible
+    # in a ThreatStack agent install, and we want to re-run the registration
+    # process when the ruleset list changes.
+    file '/opt/threatstack/etc/active_rulesets.txt' do
+      content node['threatstack']['rulesets'].join("\n").concat("\n")
+      mode 0644
+      owner 'root'
+      group 'root'
+    end
 
-# deleting this file allows cloudsight to be reconfigured after installation
-file '/opt/threatstack/cloudsight/config/.secret' do
-  action :nothing
-  subscribes :delete, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
-end
+    # deleting this file allows cloudsight to be reconfigured after installation
+    file '/opt/threatstack/cloudsight/config/.secret' do
+      action :nothing
+      subscribes :delete, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+    end
 
-# Only if we are about to reconfigure a running instance
-execute 'stop threatstack services' do
-  command '/usr/bin/cloudsight stop'
-  action :nothing
-  subscribes :run, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+    # Only if we are about to reconfigure a running instance
+    execute 'stop threatstack services' do
+      command '/usr/bin/cloudsight stop'
+      action :nothing
+      subscribes :run, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+    end
+  end
 end
 
 if node['threatstack']['configure_agent']
+
+  # `cloudsight setup` resource runs `cloudsight config` if there is stuff to
+  # configure.
   execute 'cloudsight setup' do
     command cmd
     action :run
@@ -83,22 +103,42 @@ if node['threatstack']['configure_agent']
         ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
     end
   end
-  if node['threatstack']['agent_config_args']
-    file '/opt/threatstack/cloudsight/config/.config_args' do
-      owner 'root'
-      group 'root'
-      mode 0644
-      content node['threatstack']['agent_config_args']
-      notifies :run, 'execute[cloudsight configure]'
+
+  # This block is for reconfiguring the agent after setup has been completed.
+  unless agent_config_args.empty?
+    require 'json'
+
+    # We can only set one argument at a time to build a string of `cloudsight
+    # config` commands per argument.
+    cloudsight_config_cmds = []
+    unless node['threatstack']['agent_config_args'].nil?
+      agent_config_args = node['threatstack']['agent_config_args'].split(' ')
+      agent_config_args.each do |arg|
+        cloudsight_config_cmds.push("cloudsight config #{arg}")
+      end
     end
+    cloudsight_config_cmd = cloudsight_config_cmds.join(' ; ')
 
     execute 'cloudsight configure' do
-      command "cloudsight config #{node['threatstack']['agent_config_args']}"
-      action :nothing
+      command cloudsight_config_cmd
+      action :run
       retries 3
       timeout 60
       if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
         sensitive true
+      end
+      not_if do
+        args_hash = JSON.parse(File.open(agent_config_info_file).read)
+        no_changes = true
+        agent_config_args.each do |arg|
+          k, v = arg.split('=')
+          # If this fails then just break out causing
+          unless (args_hash.key? k) && (args_hash.fetch(k) == v)
+            no_changes = false
+            break
+          end
+        end
+        no_changes
       end
       notifies :restart, 'service[cloudsight]'
     end
