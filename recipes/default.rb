@@ -28,7 +28,6 @@ end
 
 agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 
-
 package 'threatstack-agent' do
   version node['threatstack']['version'] if node['threatstack']['version']
   action node['threatstack']['pkg_action']
@@ -47,7 +46,7 @@ end
 # and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
 cmd = ''
-if ! agent_config_args.empty?
+unless agent_config_args.empty?
   agent_config_args.each do |arg|
     cmd += "cloudsight config #{arg} ;"
   end
@@ -57,7 +56,7 @@ cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']
 cmd += " #{node['threatstack']['agent_extra_args']}" if node['threatstack']['agent_extra_args'] != ''
 
 # Handle ruleset management via here.
-if ! node['threatstack']['rulesets'].empty?
+unless node['threatstack']['rulesets'].empty?
   node['threatstack']['rulesets'].each do |r|
     cmd += " --ruleset='#{r}'"
 
@@ -106,13 +105,13 @@ if node['threatstack']['configure_agent']
   end
 
   # This block is for reconfiguring the agent after setup has been completed.
-  if ! agent_config_args.empty?
+  unless agent_config_args.empty?
     require 'json'
 
     # We can only set one argument at a time to build a string of `cloudsight
     # config` commands per argument.
     cloudsight_config_cmds = []
-    if ! node['threatstack']['agent_config_args'].nil?
+    unless node['threatstack']['agent_config_args'].nil?
       agent_config_args = node['threatstack']['agent_config_args'].split(' ')
       agent_config_args.each do |arg|
         cloudsight_config_cmds.push("cloudsight config #{arg}")
@@ -130,13 +129,16 @@ if node['threatstack']['configure_agent']
       end
       not_if do
         args_hash = JSON.parse(File.open(agent_config_info_file).read)
+        no_changes = true
         agent_config_args.each do |arg|
-          k,v = arg.split('=')
+          k, v = arg.split('=')
           # If this fails then just break out causing
-          if !(args_hash.has_key? k and args_hash.fetch(k) == v)
+          unless (args_hash.key? k) && (args_hash.fetch(k) == v)
+            no_changes = false
             break
           end
         end
+        no_changes
       end
       notifies :restart, 'service[cloudsight]'
     end
