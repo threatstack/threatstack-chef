@@ -41,31 +41,34 @@ cmd = "cloudsight setup --deploy-key=#{deploy_key}"
 cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
 cmd += " #{node['threatstack']['agent_extra_args']}" if node['threatstack']['agent_extra_args'] != ''
 
-node['threatstack']['rulesets'].each do |r|
-  cmd += " --ruleset='#{r}'"
-end
+# Handle ruleset management via here.
+if ! node['threatstack']['rulesets'].empty?
+  node['threatstack']['rulesets'].each do |r|
+    cmd += " --ruleset='#{r}'"
 
-# This file is maintained because the list of rulesets is not readily accessible
-# in a ThreatStack agent install, and we want to re-run the registration
-# process when the ruleset list changes.
-file '/opt/threatstack/etc/active_rulesets.txt' do
-  content node['threatstack']['rulesets'].join("\n").concat("\n")
-  mode 0644
-  owner 'root'
-  group 'root'
-end
+    # This file is maintained because the list of rulesets is not readily accessible
+    # in a ThreatStack agent install, and we want to re-run the registration
+    # process when the ruleset list changes.
+    file '/opt/threatstack/etc/active_rulesets.txt' do
+      content node['threatstack']['rulesets'].join("\n").concat("\n")
+      mode 0644
+      owner 'root'
+      group 'root'
+    end
 
-# deleting this file allows cloudsight to be reconfigured after installation
-file '/opt/threatstack/cloudsight/config/.secret' do
-  action :nothing
-  subscribes :delete, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
-end
+    # deleting this file allows cloudsight to be reconfigured after installation
+    file '/opt/threatstack/cloudsight/config/.secret' do
+      action :nothing
+      subscribes :delete, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+    end
 
-# Only if we are about to reconfigure a running instance
-execute 'stop threatstack services' do
-  command '/usr/bin/cloudsight stop'
-  action :nothing
-  subscribes :run, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+    # Only if we are about to reconfigure a running instance
+    execute 'stop threatstack services' do
+      command '/usr/bin/cloudsight stop'
+      action :nothing
+      subscribes :run, 'file[/opt/threatstack/etc/active_rulesets.txt]', :immediately
+    end
+  end
 end
 
 if node['threatstack']['configure_agent']
