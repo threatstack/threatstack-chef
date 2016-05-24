@@ -130,7 +130,6 @@ if node['threatstack']['configure_agent']
       end
       not_if do
         args_hash = JSON.parse(File.open(agent_config_info_file).read)
-        puts args_hash
         agent_config_args.each do |arg|
           k,v = arg.split('=')
           # If this fails then just break out causing
