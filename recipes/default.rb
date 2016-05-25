@@ -150,8 +150,7 @@ if node['threatstack']['configure_agent']
     # We can only set one argument at a time to build a string of `cloudsight
     # config` commands per argument.
     cloudsight_config_cmds = []
-    unless node['threatstack']['agent_config_args'].nil?
-      agent_config_args = node['threatstack']['agent_config_args'].split(' ')
+    unless agent_config_args.empty?
       agent_config_args.each do |arg|
         cloudsight_config_cmds.push("cloudsight config #{arg}")
       end
