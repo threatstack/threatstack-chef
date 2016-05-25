@@ -30,10 +30,14 @@ bundle exec rake
 
 ### Integration Tests
 
+This tests a number of different suites, some of which require special credentials or virtual machine configurations.
 Integration tests are setup to run under test-kitchen:
 
+Requirements:
+To run integration testing you need a valid threatstack agent deployment key
+Get your deployment key from the Threat Stack application under "Settings" -> "Applications Keys"
+
 ```
+export TS_DEPLOY_KEY=<deploy key>
 kitchen test
 ```
-
-This tests a number of different suites, some of which require special credentials or virtual machine configurations. Please see the caveats and known issues below for additional details.
