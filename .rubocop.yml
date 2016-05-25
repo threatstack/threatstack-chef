@@ -7,3 +7,5 @@ AllCops:
 
 LineLength:
   Enabled: false
+Metrics/BlockNesting:
+  Enabled: false
