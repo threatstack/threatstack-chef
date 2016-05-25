@@ -165,7 +165,7 @@ if node['threatstack']['configure_agent']
         owner 'root'
         group 'root'
         mode 0644
-        content node['threatstack']['agent_config_args']
+        content agent_config_args.join(' ')
         # if agent_version is 0.0.0 then `cloudsight config` was run in
         # execute[cloudsight setup].
         notifies :run, 'execute[cloudsight configure]' unless agent_version == '0.0.0'
