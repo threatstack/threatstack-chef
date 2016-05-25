@@ -16,6 +16,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#
+# == Agent configuration and registration process
+# Agent configuration and registration can be complicated and the code below
+# can be difficult to understand.  This is a result of needing to solve for:
+# * agent < 1.4.8 and agent >= 1.4.8 where we introduced a file with the
+#   running configuration that can be checked.
+# * initial configuration run v. subsequent configuration runs.
+#   * initial runs will lack knowledge of the agent version being installed.
+#     See first bullet why this matters.
+#   * initial config run must be done before setup and MUST NOT restart the
+#     agent service while subsequent runs, to reconfigure the agent, do not
+#     invoke setup and MUST restart agent.
+#
+# We assume on first run that we don't know the agent version.  If
+# node['threatstack']['agent_config_args'] is set then we precede
+# `cloudsight setup` with `cloudsight config` commands IN
+# execute[cloudsight setup].  WE DON'T EXECUTE 'execute[cloudsight configure]'
+# ON THE INITIAL RUN TO CONFIGURE THE AGENT.
+#
+# On subsequent runs we are able to figure out the agent version.
+# * If the agent version is < 1.4.8
+#   * we drop a cookie file with the stringified
+#     node['threatstack']['agent_config_args'] and notify
+#     'execute[cloudsight configure]' of the resource change which will run
+#     `cloudsight config` and notify 'service[cloudsight]' to restart.
+# * If the agent version is >= 1.4.8
+#   * we read config.json and check the values of
+#     node['threatstack']['agent_config_args'] against the running
+#     configuration.  On difference the 'execute[cloudsight configure]'
+#     resource executes cloudsight config` and notifies
+#     'service[cloudsight]' to restart.
+#
 include_recipe "threatstack::#{node['platform_family']}" if node['threatstack']['repo_enable']
 
 # Handle backwards compatibility from when we just passed a string to
@@ -31,6 +63,13 @@ agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 package 'threatstack-agent' do
   version node['threatstack']['version'] if node['threatstack']['version']
   action node['threatstack']['pkg_action']
+end
+
+# needed for handing `cloudsight config`
+if File.exist? '/opt/threatstack/etc/version'
+  agent_version = File.open('/opt/threatstack/etc/version').read
+else
+  agent_version = '0.0.0'
 end
 
 if node['threatstack']['deploy_key'].nil?
@@ -119,26 +158,43 @@ if node['threatstack']['configure_agent']
     end
     cloudsight_config_cmd = cloudsight_config_cmds.join(' ; ')
 
+    # agent 1.4.8 introduced the config.json file.  Before that we must use
+    # the older cookie file.
+    if agent_version < '1.4.8'
+      file '/opt/threatstack/cloudsight/config/.config_args' do
+        owner 'root'
+        group 'root'
+        mode 0644
+        content node['threatstack']['agent_config_args']
+        # if agent_version is 0.0.0 then `cloudsight config` was run in
+        # execute[cloudsight setup].
+        notifies :run, 'execute[cloudsight configure]' unless agent_version == '0.0.0'
+      end
+      cloudsight_config_action = :nothing
+    else
+      cloudsight_config_action = :run
+    end
+
     execute 'cloudsight configure' do
       command cloudsight_config_cmd
-      action :run
+      action cloudsight_config_action
       retries 3
       timeout 60
-      if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
-        sensitive true
-      end
-      not_if do
-        args_hash = JSON.parse(File.open(agent_config_info_file).read)
-        no_changes = true
-        agent_config_args.each do |arg|
-          k, v = arg.split('=')
-          # If this fails then just break out causing
-          unless (args_hash.key? k) && (args_hash.fetch(k) == v)
-            no_changes = false
-            break
+      # We don't have agent_config_info_file until agent 1.4.8
+      if agent_version >= '1.4.8'
+        not_if do
+          args_hash = JSON.parse(File.open(agent_config_info_file).read)
+          no_changes = true
+          agent_config_args.each do |arg|
+            k, v = arg.split('=')
+            # If this fails then just break out causing
+            unless (args_hash.key? k) && (args_hash.fetch(k) == v)
+              no_changes = false
+              break
+            end
           end
+          no_changes
         end
-        no_changes
       end
       notifies :restart, 'service[cloudsight]'
     end
