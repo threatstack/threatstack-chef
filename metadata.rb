@@ -4,7 +4,7 @@ maintainer_email 'support@threatstack.com'
 license          'Apache 2.0'
 description      'Installs/Configures Threat Stack cloudsight components'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.6.7'
+version          '1.6.8'
 
 supports 'amazon'
 supports 'centos'
