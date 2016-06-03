@@ -60,6 +60,9 @@ end
 
 agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 
+# NOTE: We do not signal the cloudsight service to restart because the package
+# takes care of this.  The workflow differs between fresh installation
+# installation and upgrades.
 package 'threatstack-agent' do
   version node['threatstack']['version'] if node['threatstack']['version']
   action node['threatstack']['pkg_action']
@@ -200,6 +203,9 @@ if node['threatstack']['configure_agent']
   end
 end
 
+# NOTE: We do not signal the cloudsight service to restart via the package
+# resource because the workflow differs between fresh installation and
+# upgrades.  The package scripts will handle this.
 service 'cloudsight' do
   action :enable
   supports restart: true
