@@ -3,6 +3,7 @@ Threat Stack Cookbook
 
 [![Build Status](https://travis-ci.org/threatstack/threatstack-chef.svg?branch=master)][travis]
 [![Cookbook Version](http://img.shields.io/cookbook/v/threatstack.svg)][cookbook]
+[![Build Status](https://jenkins-01.eastus.cloudapp.azure.com/job/threatstack-cookbook/badge/icon)](https://jenkins-01.eastus.cloudapp.azure.com/job/threatstack-cookbook/)
 
 [travis]: https://travis-ci.org/threatstack/threatstack-chef
 [cookbook]: https://supermarket.chef.io/cookbooks/threatstack
