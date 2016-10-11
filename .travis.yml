@@ -11,6 +11,8 @@ before_install:
 - gem --version
 env:
 - CHEF_VERSION="= 12.4.1"
+- CHEF_VERSION="= 12.9.41"
+- CHEF_VERSION="= 12.14.89"
 
 notifications:
   slack:
