@@ -5,9 +5,9 @@ script:
 cache: bundler
 sudo: required
 rvm:
-- 2.1.0
+- 2.2
 before_install:
-- gem update --system 2.1.11
+- gem update --system 2.4.8
 - gem --version
 env:
 - CHEF_VERSION="= 12.4.1"
