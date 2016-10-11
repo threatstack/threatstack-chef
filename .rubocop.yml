@@ -5,6 +5,9 @@ AllCops:
     - vendor/**/*
     - Gemfile
 
+Style/ConditionalAssignment:
+  Enabled: false
+
 LineLength:
   Enabled: false
 Metrics/BlockNesting:
