@@ -10,7 +10,6 @@ before_install:
 - gem update --system 2.1.11
 - gem --version
 env:
-- CHEF_VERSION="= 11.18.12"
 - CHEF_VERSION="= 12.4.1"
 
 notifications:
