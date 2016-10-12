@@ -12,7 +12,7 @@ before_install:
 env:
 - CHEF_VERSION="= 12.5.1"
 - CHEF_VERSION="= 12.9.41"
-- CHEF_VERSION="= 12.14.89"
+- CHEF_VERSION=">= 0.0.0"   # installs latest
 
 notifications:
   slack:
