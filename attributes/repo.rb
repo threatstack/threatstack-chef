@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 default['threatstack']['repo_enable'] = true
 
 case node['platform_family']
