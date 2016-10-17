@@ -107,7 +107,7 @@ unless node['threatstack']['rulesets'].empty?
     # process when the ruleset list changes.
     file '/opt/threatstack/etc/active_rulesets.txt' do
       content node['threatstack']['rulesets'].join("\n").concat("\n")
-      mode 0644
+      mode '0644'
       owner 'root'
       group 'root'
     end
@@ -166,7 +166,7 @@ if node['threatstack']['configure_agent']
       file '/opt/threatstack/cloudsight/config/.config_args' do
         owner 'root'
         group 'root'
-        mode 0644
+        mode '0644'
         content agent_config_args.join(' ')
         # if agent_version is 0.0.0 then `cloudsight config` was run in
         # execute[cloudsight setup].

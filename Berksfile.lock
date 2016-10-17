@@ -6,8 +6,10 @@ DEPENDENCIES
   yum
 
 GRAPH
-  apt (2.6.1)
+  apt (4.0.2)
+    compat_resource (>= 12.10)
+  compat_resource (12.14.7)
   threatstack (1.6.8)
     apt (>= 0.0.0)
     yum (>= 0.0.0)
-  yum (3.5.3)
+  yum (4.0.0)
