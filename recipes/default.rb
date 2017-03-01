@@ -68,12 +68,12 @@ when nil
   feature_plan_arg = 'agent_type="i"'
   log 'Set feature_plan' do
     level :warn
-    message "The feature_plan attribute must be set. This will become a hard failure at a later date."
+    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
   end
 else
   log 'Set feature_plan' do
     level :warn
-    message "The feature_plan attribute must be set. This will become a hard failure at a later date."
+    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
   end
   raise
 end
