@@ -29,7 +29,7 @@ describe 'threatstack::default' do
 
     it 'executes the cloudsight setup' do
       expect(chef_run).to run_execute('cloudsight setup').with(
-        command: "cloudsight setup --deploy-key=ABCD1234 --ruleset='Base Rule Set'"
+        command: "cloudsight config agent_type=\"i\" ;cloudsight setup --deploy-key=ABCD1234 --ruleset='Base Rule Set'"
       )
     end
   end
@@ -44,7 +44,7 @@ describe 'threatstack::default' do
 
     it 'prefers the explicit deploy_key when one is specified' do
       expect(chef_run).to run_execute('cloudsight setup').with(
-        command: "cloudsight setup --deploy-key=EFGH5678 --ruleset='Base Rule Set'"
+        command: "cloudsight config agent_type=\"i\" ;cloudsight setup --deploy-key=EFGH5678 --ruleset='Base Rule Set'"
       )
     end
   end
@@ -63,7 +63,7 @@ describe 'threatstack::default' do
 
     it 'executes the cloudsight setup with multiple rulesets' do
       expect(chef_run).to run_execute('cloudsight setup').with(
-        command: "cloudsight setup --deploy-key=ABCD1234 --ruleset='base' --ruleset='ubuntu' --ruleset='cassandra'"
+        command: "cloudsight config agent_type=\"i\" ;cloudsight setup --deploy-key=ABCD1234 --ruleset='base' --ruleset='ubuntu' --ruleset='cassandra'"
       )
     end
   end
@@ -108,7 +108,7 @@ describe 'threatstack::default' do
 
     it 'executes the cloudsight setup with a configured hostname' do
       expect(chef_run).to run_execute('cloudsight setup').with(
-        command: 'cloudsight setup --deploy-key=ABCD1234 --foo=bar'
+        command: "cloudsight config agent_type=\"i\" ;cloudsight setup --deploy-key=ABCD1234 --foo=bar"
       )
     end
   end
@@ -123,7 +123,7 @@ describe 'threatstack::default' do
 
     it 'executes the cloudsight setup with a configured hostname' do
       expect(chef_run).to run_execute('cloudsight setup').with(
-        command: "cloudsight setup --deploy-key=ABCD1234 --hostname='test_server-i-abc123'"
+        command: "cloudsight config agent_type=\"i\" ;cloudsight setup --deploy-key=ABCD1234 --hostname='test_server-i-abc123'"
       )
     end
   end
