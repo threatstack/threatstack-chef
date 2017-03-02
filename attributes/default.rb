@@ -31,6 +31,14 @@ default['threatstack']['deploy_key'] = nil
 default['threatstack']['data_bag_name'] = 'threatstack'
 default['threatstack']['data_bag_item'] = 'api_keys'
 
+# Threat Stack feature plan.  Valid string values:
+# * investigate: Investigate package
+# * monitor: Monitor package
+# * legacy: Legacy Basic, Pro, Advanced packages
+#
+# See: https://www.threatstack.com/plans
+default['threatstack']['feature_plan'] = nil
+
 # Control the configuration of the Threat Stack agent.  Useful when installing
 # agent into images.
 default['threatstack']['configure_agent'] = true

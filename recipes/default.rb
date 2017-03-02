@@ -58,6 +58,33 @@ else
   agent_config_args = node['threatstack']['agent_config_args']
 end
 
+# Manage agent_plan arg from feature type.
+case node['threatstack']['feature_plan']
+when 'monitor'
+  feature_plan_arg = 'agent_type="m"'
+when 'investigate', 'legacy'
+  feature_plan_arg = 'agent_type="i"'
+when nil
+  feature_plan_arg = 'agent_type="i"'
+  log 'Set feature_plan' do
+    level :warn
+    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
+  end
+else
+  log 'Set feature_plan' do
+    level :warn
+    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
+  end
+  raise
+end
+
+# make sure we don't have [, 'foo=bar'] which breaks us later.
+if agent_config_args[0].nil?
+  agent_config_args_full = [feature_plan_arg]
+else
+  agent_config_args_full = agent_config_args + [feature_plan_arg]
+end
+
 agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 
 # NOTE: We do not signal the cloudsight service to restart because the package
@@ -88,8 +115,8 @@ end
 # and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
 cmd = ''
-unless agent_config_args.empty?
-  agent_config_args.each do |arg|
+unless agent_config_args_full.empty?
+  agent_config_args_full.each do |arg|
     cmd += "cloudsight config #{arg} ;"
   end
 end
@@ -147,14 +174,14 @@ if node['threatstack']['configure_agent']
   end
 
   # This block is for reconfiguring the agent after setup has been completed.
-  unless agent_config_args.empty?
+  unless agent_config_args_full.empty?
     require 'json'
 
     # We can only set one argument at a time to build a string of `cloudsight
     # config` commands per argument.
     cloudsight_config_cmds = []
-    unless agent_config_args.empty?
-      agent_config_args.each do |arg|
+    unless agent_config_args_full.empty?
+      agent_config_args_full.each do |arg|
         cloudsight_config_cmds.push("cloudsight config #{arg}")
       end
     end
@@ -167,7 +194,7 @@ if node['threatstack']['configure_agent']
         owner 'root'
         group 'root'
         mode '0644'
-        content agent_config_args.join(' ')
+        content agent_config_args_full.join(' ')
         # if agent_version is 0.0.0 then `cloudsight config` was run in
         # execute[cloudsight setup].
         notifies :run, 'execute[cloudsight configure]' unless agent_version == '0.0.0'
@@ -187,7 +214,7 @@ if node['threatstack']['configure_agent']
         not_if do
           args_hash = JSON.parse(File.open(agent_config_info_file).read)
           no_changes = true
-          agent_config_args.each do |arg|
+          agent_config_args_full.each do |arg|
             k, v = arg.split('=')
             # If this fails then just break out causing
             unless (args_hash.key? k) && (args_hash.fetch(k) == v)
