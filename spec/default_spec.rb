@@ -108,7 +108,7 @@ describe 'threatstack::default' do
 
     it 'executes the cloudsight setup with a configured hostname' do
       expect(chef_run).to run_execute('cloudsight setup').with(
-        command: "cloudsight config agent_type=\"i\" ;cloudsight setup --deploy-key=ABCD1234 --foo=bar"
+        command: 'cloudsight config agent_type="i" ;cloudsight setup --deploy-key=ABCD1234 --foo=bar'
       )
     end
   end
