@@ -235,4 +235,5 @@ end
 service 'cloudsight' do
   action node['threatstack']['cloudsight_service_action']
   supports restart: true
+  stop_command "service cloudsight stop; exit 0"  # Because init script exits 3...
 end
