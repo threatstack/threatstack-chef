@@ -155,7 +155,6 @@ unless node['threatstack']['rulesets'].empty?
 end
 
 if node['threatstack']['configure_agent']
-
   # `cloudsight setup` resource runs `cloudsight config` if there is stuff to
   # configure.
   execute 'cloudsight setup' do
@@ -217,7 +216,7 @@ if node['threatstack']['configure_agent']
           agent_config_args_full.each do |arg|
             k, v = arg.split('=')
             # If this fails then just break out causing
-            unless (args_hash.key? k) && (args_hash.fetch(k) == v)
+            unless (args_hash.key? k) && (args_hash.fetch(k) == v.delete('"\''))
               no_changes = false
               break
             end
@@ -233,7 +232,11 @@ end
 # NOTE: We do not signal the cloudsight service to restart via the package
 # resource because the workflow differs between fresh installation and
 # upgrades.  The package scripts will handle this.
+if node['threatstack']['configure_agent'] == false
+  node['threatstack']['cloudsight_service_action'].delete('start')
+end
 service 'cloudsight' do
-  action :enable
+  action node['threatstack']['cloudsight_service_action']
   supports restart: true
+  stop_command 'service cloudsight stop; exit 0' # Because init script exits 3...
 end
