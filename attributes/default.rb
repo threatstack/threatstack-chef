@@ -45,3 +45,6 @@ default['threatstack']['configure_agent'] = true
 # Pass aditional arguments to the agent during setup
 default['threatstack']['agent_extra_args'] = ''
 default['threatstack']['agent_config_args'] = []
+
+default['threatstack']['cloudsight_service_action'] = :enable
+

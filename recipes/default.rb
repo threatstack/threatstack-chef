@@ -155,7 +155,6 @@ unless node['threatstack']['rulesets'].empty?
 end
 
 if node['threatstack']['configure_agent']
-
   # `cloudsight setup` resource runs `cloudsight config` if there is stuff to
   # configure.
   execute 'cloudsight setup' do
@@ -234,6 +233,6 @@ end
 # resource because the workflow differs between fresh installation and
 # upgrades.  The package scripts will handle this.
 service 'cloudsight' do
-  action :enable
+  action node['threatstack']['cloudsight_service_action']
   supports restart: true
 end
