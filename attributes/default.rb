@@ -46,5 +46,6 @@ default['threatstack']['configure_agent'] = true
 default['threatstack']['agent_extra_args'] = ''
 default['threatstack']['agent_config_args'] = []
 
-default['threatstack']['cloudsight_service_action'] = :enable
+# if configure_agent=false then we remove start in the cookbook
+default['threatstack']['cloudsight_service_action'] = [:enable, :start]
 

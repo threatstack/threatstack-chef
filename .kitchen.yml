@@ -31,3 +31,4 @@ suites:
           - <%= ENV['TS_CONFIG_ARGS'] %>
         version: <%= ENV['TS_PACKAGE_VERSION'] %>
         cloudsight_service_action: <%= ENV['TS_SERVICE_ACTION'] != nil ? ENV['TS_SERVICE_ACTION'] : 'enable' %>
+        configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>

@@ -232,6 +232,9 @@ end
 # NOTE: We do not signal the cloudsight service to restart via the package
 # resource because the workflow differs between fresh installation and
 # upgrades.  The package scripts will handle this.
+if node['threatstack']['configure_agent'] == false
+  node['threatstack']['cloudsight_service_action'].delete('start')
+end
 service 'cloudsight' do
   action node['threatstack']['cloudsight_service_action']
   supports restart: true
