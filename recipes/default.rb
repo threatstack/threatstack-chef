@@ -216,7 +216,7 @@ if node['threatstack']['configure_agent']
           agent_config_args_full.each do |arg|
             k, v = arg.split('=')
             # If this fails then just break out causing
-            unless (args_hash.key? k) && (args_hash.fetch(k) == v)
+            unless (args_hash.key? k) && (args_hash.fetch(k) == v.delete('"\''))
               no_changes = false
               break
             end
