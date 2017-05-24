@@ -79,6 +79,8 @@ Attributes
 
 `node['threatstack']['agent_config_args']` - array of arguments to enable platform features via `cloudsight config`.
 
+`node['threatstack']['cloudsight_service_timer']` - a [Chef timer](https://docs.chef.io/resource_common.html#resource-common-notifications) to manage the agent service with.
+
 Encrypted Data Bag Contents
 ===========================
 `deploy_key` - the deploy key for agent registration.

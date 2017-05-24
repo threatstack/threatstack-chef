@@ -139,7 +139,7 @@ describe 'threatstack::default' do
     end
 
     it 'enables the threatstack-agent service' do
-      expect(chef_run).to enable_service('cloudsight')
+      expect(chef_run.ruby_block('manage cloudsight service')).to notify('service[cloudsight]').to(:enable).immediately
     end
   end
 
