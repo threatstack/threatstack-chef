@@ -224,7 +224,7 @@ if node['threatstack']['configure_agent']
           no_changes
         end
       end
-      notifies :restart, 'service[cloudsight]'
+      notifies :restart, 'service[cloudsight]', node['threatstack']['cloudsight_service_timer']
     end
   end
 end
@@ -235,8 +235,19 @@ end
 if node['threatstack']['configure_agent'] == false
   node['threatstack']['cloudsight_service_action'].delete('start')
 end
+ruby_block 'manage cloudsight service' do
+  block {}
+  if node['threatstack']['cloudsight_service_action'].respond_to?(:each)
+    node['threatstack']['cloudsight_service_action'].each do |action|
+      notifies action, 'service[cloudsight]', node['threatstack']['cloudsight_service_timer']
+    end
+  else
+    notifies node['threatstack']['cloudsight_service_action'], 'service[cloudsight]',
+             node['threatstack']['cloudsight_service_timer']
+  end
+end
 service 'cloudsight' do
-  action node['threatstack']['cloudsight_service_action']
+  action :nothing
   supports restart: true
   stop_command 'service cloudsight stop; exit 0' # Because init script exits 3...
 end
