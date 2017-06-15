@@ -102,13 +102,21 @@ else
   agent_version = '0.0.0'
 end
 
-if node['threatstack']['deploy_key'].nil?
+if node.run_state.key?('threatstack')
+  if node.run_state['threatstack'].key?('deploy_key')
+    deploy_key = node.run_state['threatstack']['deploy_key']
+  end
+elsif node['threatstack']['deploy_key']
+  deploy_key = node['threatstack']['deploy_key']
+else
   deploy_key = Chef::EncryptedDataBagItem.load(
     node['threatstack']['data_bag_name'],
     node['threatstack']['data_bag_item']
   )['deploy_key']
-else
-  deploy_key = node['threatstack']['deploy_key']
+end
+
+if deploy_key.nil? || deploy_key.empty?
+  raise 'No Threat Stack deploy key found in run state, attributes, or data bag. Cannot continue.'
 end
 
 # Register the Threat Stack agent - Rulesets are not required

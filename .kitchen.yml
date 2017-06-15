@@ -24,11 +24,13 @@ suites:
   - name: default
     run_list:
       - recipe[threatstack]
+    provisioner:
+      encrypted_data_bag_secret_key_path: test/integration/data_bags/insecure_data_bag_secret
     attributes:
       apt:
         compile_time_update: true
       threatstack:
-        deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : 'ts_deploy_key' %>
+        deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
         feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
         agent_config_args:
           - <%= ENV['TS_CONFIG_ARGS'] %>
