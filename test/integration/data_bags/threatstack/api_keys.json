@@ -1,3 +1,10 @@
 {
-  "id": "api_keys"
+  "id": "api_keys",
+  "deploy_key": {
+    "encrypted_data": "qwwau017/cxUjbiVYJ8MxKmtrXRFEO6itpBtYc213PU=\n",
+    "hmac": "jqLdvi5gqQ0FylZrqK2+q+IEJv30hRnrFAjKQFN3e3Q=\n",
+    "iv": "v0mStikWnMsS0aXCcKsKaw==\n",
+    "version": 2,
+    "cipher": "aes-256-cbc"
+  }
 }
