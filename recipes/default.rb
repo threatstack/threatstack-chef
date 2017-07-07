@@ -64,18 +64,8 @@ when 'monitor'
   feature_plan_arg = 'agent_type="m"'
 when 'investigate', 'legacy'
   feature_plan_arg = 'agent_type="i"'
-when nil
-  feature_plan_arg = 'agent_type="i"'
-  log 'Set feature_plan' do
-    level :warn
-    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
-  end
 else
-  log 'Set feature_plan' do
-    level :warn
-    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
-  end
-  raise
+  raise "The node['threatstack']['feature_plan'] attribute must be set."
 end
 
 # make sure we don't have [, 'foo=bar'] which breaks us later.

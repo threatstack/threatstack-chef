@@ -59,7 +59,9 @@ Setting the key will disable the encrypted data bag lookup.
 Additionally you we can read the deploy key from the `node.run_state['threatstack']['deploy_key']` location
 Simply set the value of the deploy key in the run state at that location.
 
-3. Add this recipe to your runlist or include in another recipe
+3. Set the `node['threatstack']['feature_plan']` appropriately for your organzation
+
+4. Add this recipe to your runlist or include in another recipe
 
 Attributes
 ==========
