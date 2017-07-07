@@ -12,7 +12,7 @@ Chef recipes to deploy the Threat Stack server agent
 
 Requirements
 ============
-- chef > 11.0
+- chef > 12.15
 
 Platforms
 ---------
@@ -56,7 +56,12 @@ use the `'deploy_key'` value from the databag by default.
 You can also set the key directly or using a wrapper cookbook in the `node['threatstack']['deploy_key']` attribute.
 Setting the key will disable the encrypted data bag lookup.
 
-3. Add this recipe to your runlist or include in another recipe
+Additionally you we can read the deploy key from the `node.run_state['threatstack']['deploy_key']` location
+Simply set the value of the deploy key in the run state at that location.
+
+3. Set the `node['threatstack']['feature_plan']` appropriately for your organzation
+
+4. Add this recipe to your runlist or include in another recipe
 
 Attributes
 ==========

@@ -3,6 +3,7 @@ AllCops:
     - metadata.rb
     - Rakefile
     - vendor/**/*
+    - spec/**/*
     - Gemfile
 
 Style/ConditionalAssignment:

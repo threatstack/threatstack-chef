@@ -64,18 +64,8 @@ when 'monitor'
   feature_plan_arg = 'agent_type="m"'
 when 'investigate', 'legacy'
   feature_plan_arg = 'agent_type="i"'
-when nil
-  feature_plan_arg = 'agent_type="i"'
-  log 'Set feature_plan' do
-    level :warn
-    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
-  end
 else
-  log 'Set feature_plan' do
-    level :warn
-    message 'The feature_plan attribute must be set. This will become a hard failure at a later date.'
-  end
-  raise
+  raise "The node['threatstack']['feature_plan'] attribute must be set to one of (monitor, investigate, or legacy)."
 end
 
 # make sure we don't have [, 'foo=bar'] which breaks us later.
@@ -109,7 +99,7 @@ if node.run_state.key?('threatstack')
 elsif node['threatstack']['deploy_key']
   deploy_key = node['threatstack']['deploy_key']
 else
-  deploy_key = Chef::EncryptedDataBagItem.load(
+  deploy_key = data_bag_item(
     node['threatstack']['data_bag_name'],
     node['threatstack']['data_bag_item']
   )['deploy_key']
@@ -171,9 +161,7 @@ if node['threatstack']['configure_agent']
     retries 3
     timeout 60
     ignore_failure node['threatstack']['ignore_failure']
-    if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
-      sensitive true
-    end
+    sensitive true
     not_if do
       ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
         ::File.exist?('/opt/threatstack/cloudsight/config/.secret')

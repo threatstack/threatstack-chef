@@ -10,8 +10,8 @@ before_install:
 - gem update --system 2.6.6
 - gem --version
 env:
-- CHEF_VERSION="= 12.5.1"
-- CHEF_VERSION="= 12.9.41"
+- CHEF_VERSION="= 12.15.19"
+- CHEF_VERSION="= 12.21.1"
 - CHEF_VERSION=">= 0.0.0"   # installs latest
 
 notifications:
