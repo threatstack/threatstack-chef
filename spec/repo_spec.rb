@@ -8,6 +8,7 @@ describe 'threatstack::default' do
         version: '7.8'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -33,6 +34,7 @@ describe 'threatstack::default' do
         version: '12.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -54,6 +56,7 @@ describe 'threatstack::default' do
         version: '14.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -75,6 +78,7 @@ describe 'threatstack::default' do
         version: '16.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -96,6 +100,7 @@ describe 'threatstack::default' do
         version: '6.5'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -120,6 +125,7 @@ describe 'threatstack::default' do
         version: '6.5'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -144,6 +150,7 @@ describe 'threatstack::default' do
         version: '2012.09'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end

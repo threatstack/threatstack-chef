@@ -5,7 +5,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
         node.normal['threatstack']['rulesets'] = ['Base Rule Set']
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -40,7 +40,7 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new do |node|
         node.normal['threatstack']['deploy_key'] = 'EFGH5678'
         node.normal['threatstack']['rulesets'] = ['Base Rule Set']
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -56,7 +56,7 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['rulesets'] = %w(base ubuntu cassandra)
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -76,7 +76,7 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['rulesets'] = %w(base enhanced)
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -107,7 +107,7 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['agent_extra_args'] = '--foo=bar'
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -123,7 +123,7 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['hostname'] = 'test_server-i-abc123'
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -141,7 +141,7 @@ describe 'threatstack::default' do
         version: '14.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -157,7 +157,7 @@ describe 'threatstack::default' do
         version: '14.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
@@ -173,7 +173,7 @@ describe 'threatstack::default' do
         version: '6.6'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'monitor'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
       end.converge(described_recipe)
     end
 
