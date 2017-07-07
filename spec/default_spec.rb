@@ -4,13 +4,13 @@ describe 'threatstack::default' do
   context 'single-ruleset-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['rulesets'] = ['Base Rule Set']
+        node.normal['threatstack']['rulesets'] = ['Base Rule Set']
       end.converge(described_recipe)
     end
 
     before do
       contents = { 'deploy_key' => 'ABCD1234' }
-      allow(Chef::EncryptedDataBagItem).to receive(:load).with('threatstack', 'api_keys').and_return(contents)
+      stub_data_bag_item('threatstack', 'api_keys').and_return(contents)
     end
 
     it 'creates a ruleset file' do
@@ -37,8 +37,8 @@ describe 'threatstack::default' do
   context 'explicit-deploy-key' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = 'EFGH5678'
-        node.set['threatstack']['rulesets'] = ['Base Rule Set']
+        node.normal['threatstack']['deploy_key'] = 'EFGH5678'
+        node.normal['threatstack']['rulesets'] = ['Base Rule Set']
       end.converge(described_recipe)
     end
 
@@ -52,8 +52,8 @@ describe 'threatstack::default' do
   context 'multi-ruleset-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
-        node.set['threatstack']['rulesets'] = %w(base ubuntu cassandra)
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['rulesets'] = %w(base ubuntu cassandra)
       end.converge(described_recipe)
     end
 
@@ -71,8 +71,8 @@ describe 'threatstack::default' do
   context 'ruleset-configuration-changes' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
-        node.set['threatstack']['rulesets'] = %w(base enhanced)
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['rulesets'] = %w(base enhanced)
       end.converge(described_recipe)
     end
 
@@ -101,8 +101,8 @@ describe 'threatstack::default' do
   context 'agent-extra-args' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
-        node.set['threatstack']['agent_extra_args'] = '--foo=bar'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['agent_extra_args'] = '--foo=bar'
       end.converge(described_recipe)
     end
 
@@ -116,8 +116,8 @@ describe 'threatstack::default' do
   context 'hostname-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
-        node.set['threatstack']['hostname'] = 'test_server-i-abc123'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['hostname'] = 'test_server-i-abc123'
       end.converge(described_recipe)
     end
 
@@ -134,7 +134,7 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '14.04'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
     end
 
@@ -149,7 +149,7 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '14.04'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
     end
 
@@ -164,7 +164,7 @@ describe 'threatstack::default' do
         platform: 'redhat',
         version: '6.6'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
     end
 

@@ -7,7 +7,7 @@ describe 'threatstack::default' do
         platform: 'debian',
         version: '7.8'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
     end
@@ -26,34 +26,13 @@ describe 'threatstack::default' do
     end
   end
 
-  context 'ubuntu-lucid' do
-    let(:chef_run) do
-      runner = ChefSpec::SoloRunner.new(
-        platform: 'ubuntu',
-        version: '10.04'
-      ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
-      end
-      runner.converge(described_recipe)
-    end
-
-    it 'sets up the apt repository' do
-      expect(chef_run).to add_apt_repository('threatstack').with(
-        uri: 'https://pkg.threatstack.com/Ubuntu',
-        distribution: 'lucid',
-        components: ['main'],
-        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
-      )
-    end
-  end
-
   context 'ubuntu-precise' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'ubuntu',
         version: '12.04'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
     end
@@ -74,7 +53,7 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '14.04'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
     end
@@ -89,13 +68,34 @@ describe 'threatstack::default' do
     end
   end
 
+  context 'ubuntu-xenial' do
+    let(:chef_run) do
+      runner = ChefSpec::SoloRunner.new(
+        platform: 'ubuntu',
+        version: '16.04'
+      ) do |node|
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+      end
+      runner.converge(described_recipe)
+    end
+
+    it 'sets up the apt repository' do
+      expect(chef_run).to add_apt_repository('threatstack').with(
+        uri: 'https://pkg.threatstack.com/Ubuntu',
+        distribution: 'xenial',
+        components: ['main'],
+        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
+      )
+    end
+  end
+
   context 'redhat' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'redhat',
         version: '6.5'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
     end
@@ -119,7 +119,7 @@ describe 'threatstack::default' do
         platform: 'centos',
         version: '6.5'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
     end
@@ -143,7 +143,7 @@ describe 'threatstack::default' do
         platform: 'amazon',
         version: '2012.09'
       ) do |node|
-        node.set['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
     end
