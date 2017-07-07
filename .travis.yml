@@ -11,7 +11,7 @@ before_install:
 - gem --version
 env:
 - CHEF_VERSION="= 12.15.19"
-- CHEF_VERSION="= 12.21.3"
+- CHEF_VERSION="= 12.21.1"
 - CHEF_VERSION=">= 0.0.0"   # installs latest
 
 notifications:
