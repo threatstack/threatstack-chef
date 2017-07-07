@@ -12,7 +12,7 @@ Chef recipes to deploy the Threat Stack server agent
 
 Requirements
 ============
-- chef > 11.0
+- chef > 12.15
 
 Platforms
 ---------
