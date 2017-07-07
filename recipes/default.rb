@@ -65,7 +65,7 @@ when 'monitor'
 when 'investigate', 'legacy'
   feature_plan_arg = 'agent_type="i"'
 else
-  raise "The node['threatstack']['feature_plan'] attribute must be set."
+  raise "The node['threatstack']['feature_plan'] attribute must be set to one of (monitor, investigate, or legacy)."
 end
 
 # make sure we don't have [, 'foo=bar'] which breaks us later.
