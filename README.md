@@ -7,6 +7,7 @@ Threat Stack Cookbook
 [travis]: https://travis-ci.org/threatstack/threatstack-chef
 [cookbook]: https://supermarket.chef.io/cookbooks/threatstack
 
+** NOTE **: As of 2.x of this cookbook we only explicitly support chef 12.15 or greater.
 
 Chef recipes to deploy the Threat Stack server agent
 

@@ -4,4 +4,4 @@ DEPENDENCIES
     metadata: true
 
 GRAPH
-  threatstack (2.0.0)
+  threatstack (2.0.1)
