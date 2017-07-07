@@ -109,7 +109,7 @@ if node.run_state.key?('threatstack')
 elsif node['threatstack']['deploy_key']
   deploy_key = node['threatstack']['deploy_key']
 else
-  deploy_key = Chef::EncryptedDataBagItem.load(
+  deploy_key = data_bag_item(
     node['threatstack']['data_bag_name'],
     node['threatstack']['data_bag_item']
   )['deploy_key']
@@ -171,9 +171,7 @@ if node['threatstack']['configure_agent']
     retries 3
     timeout 60
     ignore_failure node['threatstack']['ignore_failure']
-    if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11.14.0')
-      sensitive true
-    end
+    sensitive true
     not_if do
       ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
         ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
