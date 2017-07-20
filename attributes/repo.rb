@@ -13,7 +13,7 @@ when 'rhel'
   if node['platform'] == 'amazon'
     default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/Amazon'
   else
-    default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/CentOS'
+    default['threatstack']['repo']['url'] = "https://pkg.threatstack.com/EL/#{node['platform_version'][0]}"
   end
   default['threatstack']['repo']['key'] = 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK'
   default['threatstack']['repo']['key_file'] = '/etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
