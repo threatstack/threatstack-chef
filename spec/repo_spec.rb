@@ -112,7 +112,7 @@ describe 'threatstack::default' do
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
-        baseurl: 'https://pkg.threatstack.com/CentOS',
+        baseurl: 'https://pkg.threatstack.com/EL/6',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
@@ -137,7 +137,7 @@ describe 'threatstack::default' do
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
-        baseurl: 'https://pkg.threatstack.com/CentOS',
+        baseurl: 'https://pkg.threatstack.com/EL/6',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
@@ -163,6 +163,31 @@ describe 'threatstack::default' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack',
         baseurl: 'https://pkg.threatstack.com/Amazon',
+        gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
+      )
+    end
+  end
+
+  context 'fedora' do
+    let(:chef_run) do
+      runner = ChefSpec::SoloRunner.new(
+        platform: 'fedora',
+        version: '25'
+      ) do |node|
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['feature_plan'] = 'investigate'
+      end
+      runner.converge(described_recipe)
+    end
+
+    it 'downloads the threatstack repo key' do
+      expect(chef_run).to create_remote_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK')
+    end
+
+    it 'sets up the yum repository' do
+      expect(chef_run).to add_yum_repository('threatstack').with(
+        description: 'Threat Stack',
+        baseurl: 'https://pkg.threatstack.com/EL/7',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end

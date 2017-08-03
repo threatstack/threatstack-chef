@@ -22,6 +22,9 @@ platforms:
   - name: centos-7.3
     run_list:
       - recipe[yum]
+  - name: fedora-25
+    run_list:
+      - recipe[yum]
 
 suites:
   - name: default

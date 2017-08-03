@@ -48,7 +48,14 @@
 #     resource executes cloudsight config` and notifies
 #     'service[cloudsight]' to restart.
 #
-include_recipe "threatstack::#{node['platform_family']}" if node['threatstack']['repo_enable']
+
+if node['threatstack']['repo_enable']
+  if node['platform_family'] == 'fedora'
+    include_recipe 'threatstack::rhel'
+  else
+    include_recipe "threatstack::#{node['platform_family']}"
+  end
+end
 
 # Handle backwards compatibility from when we just passed a string to
 # `cloudsight config`
