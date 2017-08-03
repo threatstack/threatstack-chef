@@ -1,18 +1,25 @@
 language: ruby
 bundler_args: "--without system_tests"
 script:
-- bundle exec rake
+  - bundle exec rake
 cache: bundler
 sudo: required
 rvm:
-- 2.3
+  - 2.2
+  - 2.3
 before_install:
-- gem update --system 2.6.6
-- gem --version
+  - gem update --system 2.6.6
+  - gem --version
 env:
-- CHEF_VERSION="= 12.15.19"
-- CHEF_VERSION="= 12.21.1"
-- CHEF_VERSION=">= 0.0.0"   # installs latest
+  - CHEF_VERSION="= 12.15.19"
+  - CHEF_VERSION="= 12.21.1"
+  - CHEF_VERSION=">= 0.0.0"   # installs latest
+
+matrix:
+  exclude:
+  - rvm: 2.2
+    gemfile: gemfiles/Gemfile.rails-2.3.x
+    env: CHEF_VERSION=">= 0.0.0"
 
 notifications:
   slack:
