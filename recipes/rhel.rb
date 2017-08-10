@@ -17,11 +17,11 @@
 # limitations under the License.
 
 remote_file node['threatstack']['repo']['key_file'] do
-  action :create
+  source node['threatstack']['repo']['key']
   owner 'root'
   group 'root'
   mode '0644'
-  source node['threatstack']['repo']['key']
+  action :create
 end
 
 yum_repository 'threatstack' do

@@ -9,11 +9,14 @@ when 'debian'
   end
   default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/Ubuntu'
   default['threatstack']['repo']['key'] = 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
-when 'rhel'
-  if node['platform'] == 'amazon'
+when 'rhel', 'fedora'
+  case node['platform']
+  when 'amazon'
     default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/Amazon'
+  when 'centos', 'redhat'
+    default['threatstack']['repo']['url'] = "https://pkg.threatstack.com/EL/#{node['platform_version'].to_i}"
   else
-    default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/CentOS'
+    default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/EL/7'
   end
   default['threatstack']['repo']['key'] = 'https://app.threatstack.com/RPM-GPG-KEY-THREATSTACK'
   default['threatstack']['repo']['key_file'] = '/etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
