@@ -50,7 +50,7 @@
 #
 
 if node['threatstack']['repo_enable']
-  if node['platform_family'].include?('fedora', 'amazon')
+  if platform_family?('fedora', 'amazon')
     include_recipe 'threatstack::rhel'
   else
     include_recipe "threatstack::#{node['platform_family']}"
