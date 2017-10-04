@@ -17,8 +17,9 @@ env:
 matrix:
   exclude:
   - rvm: 2.3
-    gemfile: gemfiles/Gemfile.rails-2.3.x
     env: CHEF_VERSION=">= 0.0.0"
+  - rvm: 2.4
+    env: CHEF_VERSION="= 12.21.14"
 
 notifications:
   slack:

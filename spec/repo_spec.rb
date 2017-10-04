@@ -19,10 +19,7 @@ describe 'threatstack::default' do
 
     it 'sets up the apt repository' do
       expect(chef_run).to add_apt_repository('threatstack').with(
-        uri: 'https://pkg.threatstack.com/Ubuntu',
-        distribution: 'wheezy',
-        components: ['main'],
-        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
+        distribution: 'wheezy'
       )
     end
   end
@@ -41,10 +38,7 @@ describe 'threatstack::default' do
 
     it 'sets up the apt repository' do
       expect(chef_run).to add_apt_repository('threatstack').with(
-        uri: 'https://pkg.threatstack.com/Ubuntu',
-        distribution: 'trusty',
-        components: ['main'],
-        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
+        distribution: 'trusty'
       )
     end
   end
@@ -63,10 +57,7 @@ describe 'threatstack::default' do
 
     it 'sets up the apt repository' do
       expect(chef_run).to add_apt_repository('threatstack').with(
-        uri: 'https://pkg.threatstack.com/Ubuntu',
-        distribution: 'xenial',
-        components: ['main'],
-        key: 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
+        distribution: 'xenial'
       )
     end
   end
