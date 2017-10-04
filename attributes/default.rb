@@ -19,6 +19,9 @@
 
 default['threatstack']['version'] = nil
 default['threatstack']['pkg_action'] = :install
+# If you want to send custom package options to the package resource
+# use the attribute below
+default['threatstack']['pkg_opts'] = nil
 # If no rulesets are specified the agent will register to the default
 # rule set, according to a comment in recipes/default.rb
 default['threatstack']['rulesets'] = []

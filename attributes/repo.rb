@@ -9,7 +9,7 @@ when 'debian'
   end
   default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/Ubuntu'
   default['threatstack']['repo']['key'] = 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
-when 'rhel', 'fedora'
+when 'rhel', 'fedora', 'amazon'
   case node['platform']
   when 'amazon'
     default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/Amazon'

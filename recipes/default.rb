@@ -50,7 +50,7 @@
 #
 
 if node['threatstack']['repo_enable']
-  if node['platform_family'] == 'fedora'
+  if node['platform_family'].include?('fedora', 'amazon')
     include_recipe 'threatstack::rhel'
   else
     include_recipe "threatstack::#{node['platform_family']}"
@@ -88,6 +88,7 @@ agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 # takes care of this.  The workflow differs between fresh installation
 # installation and upgrades.
 package 'threatstack-agent' do
+  options node['threatstack']['pkg_opts'] if node['threatstack']['pkg_opts']
   version node['threatstack']['version'] if node['threatstack']['version']
   action node['threatstack']['pkg_action']
 end

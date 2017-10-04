@@ -71,6 +71,8 @@ Attributes
 
 `node['threatstack']['pkg_action']` - Set to `:upgrade` if you want to take the latest release (defaults to `:install`).
 
+`node['threatstack']['pkg_opts']` - Override this if you want to send custom package options to the package resource (defaults to `nil`).
+
 `node['threatstack']['deploy_key']` - Override this with your deploy key for agent registration.
 
 `node['threatstack']['feature_plan']` - Threat Stack feature plan. (values: monitor, investigate, legacy; see: https://www.threatstack.com/plans)
