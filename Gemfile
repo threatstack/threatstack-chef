@@ -6,7 +6,8 @@ gem 'rubocop', '= 0.49.1'
 gem 'foodcritic', '= 11.2.0'
 gem 'serverspec', '= 2.37.1'
 gem 'stove', '= 5.2.0'
-gem 'test-kitchen'
+gem 'test-kitchen', '= 1.20.0'
+gem 'kitchen-vagrant', '= 1.3.0'
 
 if chefversion = ENV['CHEF_VERSION']
   gem 'chef', chefversion
