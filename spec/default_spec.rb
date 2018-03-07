@@ -51,6 +51,23 @@ describe 'threatstack::default' do
     end
   end
 
+  context 'explicit-run_state-deploy-key' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.run_state['threatstack'] = {}
+        node.run_state['threatstack']['deploy_key'] = 'IJKL9012'
+        node.normal['threatstack']['rulesets'] = ['Base Rule Set']
+        node.normal['threatstack']['feature_plan'] = 'investigate'
+      end.converge(described_recipe)
+    end
+
+    it 'prefers the explicit deploy_key when one is specified' do
+      expect(chef_run).to run_execute('cloudsight setup').with(
+        command: "cloudsight config agent_type=\"i\" ;cloudsight setup --deploy-key=IJKL9012 --ruleset='Base Rule Set'"
+      )
+    end
+  end
+
   context 'multi-ruleset-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
