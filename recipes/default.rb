@@ -100,14 +100,6 @@ else
   agent_version = '0.0.0'
 end
 
-# Find and set the deploy_key using the recipe helper
-ruby_block 'threatstack-deploy-key-unset' do
-  block do
-    raise "Set ['threatstack']['deploy_key'] as an attribute, a data bag item, or on the node's run_state."
-  end
-  only_if { get_deploy_key(node).nil? }
-end
-
 # Register the Threat Stack agent - Rulesets are not required
 # and if it's omitted then the agent will be placed into a
 # default rule set (most like 'Base Rule Set')
@@ -141,6 +133,14 @@ unless node['threatstack']['rulesets'].empty?
 end
 
 if node['threatstack']['configure_agent']
+  # Find and set the deploy_key using the recipe helper
+  ruby_block 'threatstack-deploy-key-unset' do
+    block do
+      raise "Set ['threatstack']['deploy_key'] as an attribute, a data bag item, or on the node's run_state."
+    end
+    only_if { get_deploy_key(node).nil? }
+  end
+  
   # `cloudsight setup` resource runs `cloudsight config` if there is stuff to
   # configure.
   execute 'cloudsight setup' do
