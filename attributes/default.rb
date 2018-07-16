@@ -55,3 +55,7 @@ default['threatstack']['cloudsight_service_action'] = %i[enable start]
 # Determines whether to start/restart the agent during or at the end of a
 # converge. Should be a valid Chef timer.
 default['threatstack']['cloudsight_service_timer'] = 'immediately'
+
+# By default, the Threat Stack service is managed through init scripts.
+# Use this option to have systemd manage the service instead
+default['threatstack']['use_systemd'] = false
