@@ -233,6 +233,59 @@ if node['threatstack']['configure_agent']
   end
 end
 
+# Use Systemd to manage the agent instead of the system init files.
+# If 'use_systemd' attribute is set:
+#     - The agent will be stopped
+#     - The SysVinit scripts will be removed
+#     - A systemd unit file will be created to manage the service
+#     - The service will be enabled and started
+if node['threatstack']['use_systemd']
+  # Stop the agent, since setup starts the agent as a side effect and we want to daemonize
+  execute 'cloudsight stop' do
+    command '/opt/threatstack/bin/cloudsight stop'
+    action :run
+  end
+
+  # Remove the agent init scripts, since systemd will be handling this all.
+  case node['platform_family']
+  when 'rhel'
+    execute 'chkconfig --del cloudsight' do
+      command '/usr/sbin/chkconfig --del cloudsight'
+      action :run
+    end
+  when 'debian'
+    execute 'update-rc.d cloudsight remove' do
+      command '/usr/sbin/update-rc.d cloudsight remove'
+      action :run
+    end
+  end
+
+  # Create, enable, and start the systemd unit file
+  systemd_unit 'cloudsight.service' do
+    content(
+      {
+        Unit: {
+          Description: 'Threat Stack Cloudsight Service',
+          After: 'network.target',
+        },
+        Service: {
+          Type: 'forking',
+          PIDFile: '/opt/threatstack/cloudsight/pids/cloudsight.pid',
+          ExecStart: '/opt/threatstack/bin/cloudsight start',
+          ExecReload: '/opt/threatstack/bin/cloudsight restart',
+          ExecStop: '/opt/threatstack/bin/cloudsight stop',
+          TimeoutSec: '30',
+          Restart: 'always',
+        },
+        Install: {
+          WantedBy: 'multi-user.target'
+        }
+      }
+    )
+    action [:create, :enable, :start]
+  end  
+end
+
 # NOTE: We do not signal the cloudsight service to restart via the package
 # resource because the workflow differs between fresh installation and
 # upgrades.  The package scripts will handle this.
