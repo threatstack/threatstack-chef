@@ -278,7 +278,8 @@ if node['threatstack']['use_systemd']
       },
       Install: {
         WantedBy: 'multi-user.target'
-      })
+      }
+    )
     action %i[create enable start]
   end
 end
