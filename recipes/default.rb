@@ -263,27 +263,24 @@ if node['threatstack']['use_systemd']
   # Create, enable, and start the systemd unit file
   systemd_unit 'cloudsight.service' do
     content(
-      {
-        Unit: {
-          Description: 'Threat Stack Cloudsight Service',
-          After: 'network.target',
-        },
-        Service: {
-          Type: 'forking',
-          PIDFile: '/opt/threatstack/cloudsight/pids/cloudsight.pid',
-          ExecStart: '/opt/threatstack/bin/cloudsight start',
-          ExecReload: '/opt/threatstack/bin/cloudsight restart',
-          ExecStop: '/opt/threatstack/bin/cloudsight stop',
-          TimeoutSec: '30',
-          Restart: 'always',
-        },
-        Install: {
-          WantedBy: 'multi-user.target'
-        }
-      }
-    )
-    action [:create, :enable, :start]
-  end  
+      Unit: {
+        Description: 'Threat Stack Cloudsight Service',
+        After: 'network.target'
+      },
+      Service: {
+        Type: 'forking',
+        PIDFile: '/opt/threatstack/cloudsight/pids/cloudsight.pid',
+        ExecStart: '/opt/threatstack/bin/cloudsight start',
+        ExecReload: '/opt/threatstack/bin/cloudsight restart',
+        ExecStop: '/opt/threatstack/bin/cloudsight stop',
+        TimeoutSec: '30',
+        Restart: 'always'
+      },
+      Install: {
+        WantedBy: 'multi-user.target'
+      })
+    action %i[create enable start]
+  end
 end
 
 # NOTE: We do not signal the cloudsight service to restart via the package
