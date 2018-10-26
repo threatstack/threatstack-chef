@@ -3,11 +3,7 @@ default['threatstack']['repo']['components'] = ['main']
 
 case node['platform_family']
 when 'debian'
-  if node['platform'] == 'debian'
-    default['threatstack']['repo']['dist'] = 'wheezy'
-  else
-    default['threatstack']['repo']['dist'] = node['lsb']['codename']
-  end
+  default['threatstack']['repo']['dist'] = node['lsb']['codename']
   default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/Ubuntu'
   default['threatstack']['repo']['key'] = 'https://app.threatstack.com/APT-GPG-KEY-THREATSTACK'
 when 'rhel', 'fedora', 'amazon'
