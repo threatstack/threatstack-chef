@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe 'threatstack::default' do
+  # Needs update
   context 'debian-wheezy' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
-        version: '7.8'
+        version: '8.8'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['feature_plan'] = 'investigate'
@@ -66,7 +67,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'redhat',
-        version: '6.5'
+        version: '6.8'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['feature_plan'] = 'investigate'
@@ -91,7 +92,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'centos',
-        version: '6.5'
+        version: '6.8'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['feature_plan'] = 'investigate'

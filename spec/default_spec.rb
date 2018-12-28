@@ -170,7 +170,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(
         platform: 'redhat',
-        version: '6.6'
+        version: '6.8'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['feature_plan'] = 'investigate'
