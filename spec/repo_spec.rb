@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'threatstack::default' do
   # Needs update
-  context 'debian-wheezy' do
+  context 'debian-jessie' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
@@ -20,7 +20,7 @@ describe 'threatstack::default' do
 
     it 'sets up the apt repository' do
       expect(chef_run).to add_apt_repository('threatstack').with(
-        distribution: 'wheezy'
+        distribution: 'jessie'
       )
     end
   end
