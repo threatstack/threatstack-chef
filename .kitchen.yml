@@ -9,6 +9,7 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
   - name: ubuntu-16.04
+  - name: ubuntu-18.04
   - name: debian-8.11
   - name: debian-9.5
   - name: centos-6.10
@@ -26,9 +27,14 @@ suites:
         compile_time_update: true
       threatstack:
         deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
-        feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
-        agent_config_args:
-          - <%= ENV['TS_CONFIG_ARGS'] %>
-        version: <%= ENV['TS_PACKAGE_VERSION'] %>
+#        feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
+        # agent_config_args:
+        #   - <%= ENV['TS_CONFIG_ARGS'] %>
+        url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
+        version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
         cloudsight_service_action: <%= ENV['TS_SERVICE_ACTION'] != nil ? ENV['TS_SERVICE_ACTION'] : 'enable' %>
         configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>
+        repo:
+          url: <%= ENV['TS_REPO_URL'] != nil ? ENV['TS_REPO_URL'] : nil %>
+          key: <%= ENV['TS_REPO_KEY'] != nil ? ENV['TS_REPO_KEY'] : nil %>
+

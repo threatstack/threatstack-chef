@@ -49,6 +49,17 @@
 #     'service[cloudsight]' to restart.
 #
 
+service 'tsagent' do
+  supports status: true, restart: true, start: true, stop: true
+  start_command 'tsagent start'
+  stop_command 'tsagent stop'
+  restart_command 'tsagent restart'
+end
+
+service 'cloudsight' do
+  supports status: true
+end
+
 if node['threatstack']['repo_enable']
   if platform_family?('fedora', 'amazon')
     include_recipe 'threatstack::rhel'
@@ -59,6 +70,8 @@ end
 
 # Handle backwards compatibility from when we just passed a string to
 # `cloudsight config`
+
+agent_config_args = nil
 if node['threatstack']['agent_config_args'].is_a? String
   agent_config_args = node['threatstack']['agent_config_args'].split(' ')
 else
@@ -66,21 +79,10 @@ else
 end
 
 # Manage agent_plan arg from feature type.
-case node['threatstack']['feature_plan']
-when 'monitor'
-  feature_plan_arg = 'agent_type="m"'
-when 'investigate', 'legacy'
-  feature_plan_arg = 'agent_type="i"'
-else
-  raise "The node['threatstack']['feature_plan'] attribute must be set to one of (monitor, investigate, or legacy)."
-end
+## deprecated
 
-# make sure we don't have [, 'foo=bar'] which breaks us later.
-if agent_config_args[0].nil?
-  agent_config_args_full = [feature_plan_arg]
-else
-  agent_config_args_full = agent_config_args + [feature_plan_arg]
-end
+# TODO: refactor args
+agent_config_args_full = agent_config_args
 
 agent_config_info_file = '/opt/threatstack/cloudsight/config/config.json'
 
@@ -93,12 +95,12 @@ package 'threatstack-agent' do
   action node['threatstack']['pkg_action']
 end
 
-# needed for handing `cloudsight config`
-if File.exist? '/opt/threatstack/etc/version'
-  agent_version = File.open('/opt/threatstack/etc/version').read
-else
-  agent_version = '0.0.0'
-end
+# # needed for handing `cloudsight config`
+# if File.exist? '/opt/threatstack/etc/version'
+#   agent_version = File.open('/opt/threatstack/etc/version').read
+# else
+#   agent_version = '0.0.0'
+# end
 
 if node.run_state.key?('threatstack')
   if node.run_state['threatstack'].key?('deploy_key')
@@ -119,15 +121,16 @@ end
 
 # Register the Threat Stack agent - Rulesets are not required
 # and if it's omitted then the agent will be placed into a
-# default rule set (most like 'Base Rule Set')
+# default rule set (most likely 'Base Rule Set')
 cmd = ''
-unless agent_config_args_full.empty?
+unless agent_config_args_full.empty? || agent_config_args_full.nil?
   agent_config_args_full.each do |arg|
-    cmd += "cloudsight config #{arg} ;"
+    cmd += "tsagent config --set #{arg} ;"
   end
 end
-cmd += "cloudsight setup --deploy-key=#{deploy_key}"
+cmd += "tsagent setup --deploy-key=#{deploy_key}"
 cmd += " --hostname='#{node['threatstack']['hostname']}'" if node['threatstack']['hostname']
+cmd += " --url='#{node['threatstack']['url']}'" if node['threatstack']['url']
 cmd += " #{node['threatstack']['agent_extra_args']}" if node['threatstack']['agent_extra_args'] != ''
 
 # Handle ruleset management via here.
@@ -163,18 +166,22 @@ end
 if node['threatstack']['configure_agent']
   # `cloudsight setup` resource runs `cloudsight config` if there is stuff to
   # configure.
-  execute 'cloudsight setup' do
+  execute 'tsagent setup' do
     command cmd
     action :run
     retries 3
     timeout 60
     ignore_failure node['threatstack']['ignore_failure']
-    sensitive true
+    # sensitive true
     not_if do
       ::File.exist?('/opt/threatstack/cloudsight/config/.audit') &&
         ::File.exist?('/opt/threatstack/cloudsight/config/.secret')
     end
+    notifies :start, 'service[tsagent]'
   end
+
+  # TODO: handle versions
+  agent_version = ''
 
   # This block is for reconfiguring the agent after setup has been completed.
   unless agent_config_args_full.empty?
@@ -233,25 +240,20 @@ if node['threatstack']['configure_agent']
   end
 end
 
-# NOTE: We do not signal the cloudsight service to restart via the package
-# resource because the workflow differs between fresh installation and
-# upgrades.  The package scripts will handle this.
-if node['threatstack']['configure_agent'] == false
-  node.default['threatstack']['cloudsight_service_action'].delete('start')
-end
-ruby_block 'manage cloudsight service' do
-  block {}
-  if node['threatstack']['cloudsight_service_action'].respond_to?(:each)
-    node['threatstack']['cloudsight_service_action'].each do |action|
-      notifies action, 'service[cloudsight]', node['threatstack']['cloudsight_service_timer']
-    end
-  else
-    notifies node['threatstack']['cloudsight_service_action'], 'service[cloudsight]',
-             node['threatstack']['cloudsight_service_timer']
-  end
-end
-service 'cloudsight' do
-  action :nothing
-  supports restart: true
-  stop_command 'service cloudsight stop; exit 0' # Because init script exits 3...
-end
+# # NOTE: We do not signal the cloudsight service to restart via the package
+# # resource because the workflow differs between fresh installation and
+# # upgrades.  The package scripts will handle this.
+# if node['threatstack']['configure_agent'] == false
+#   node.default['threatstack']['cloudsight_service_action'].delete('start')
+# end
+# ruby_block 'manage cloudsight service' do
+#   block {}
+#   if node['threatstack']['cloudsight_service_action'].respond_to?(:each)
+#     node['threatstack']['cloudsight_service_action'].each do |action|
+#       notifies action, 'service[cloudsight]', node['threatstack']['cloudsight_service_timer']
+#     end
+#   else
+#     notifies node['threatstack']['cloudsight_service_action'], 'service[cloudsight]',
+#              node['threatstack']['cloudsight_service_timer']
+#   end
+# end
