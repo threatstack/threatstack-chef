@@ -2,7 +2,7 @@
 # Cookbook Name:: threatstack
 # Recipe:: rhel
 #
-# Copyright 2014-2015, Threat Stack
+# Copyright 2014-2019, Threat Stack
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ remote_file node['threatstack']['repo']['key_file'] do
 end
 
 yum_repository 'threatstack' do
-  description 'Threat Stack'
+  description 'Threat Stack Package Repository'
   baseurl node['threatstack']['repo']['url']
   gpgkey node['threatstack']['repo']['key_file_uri']
   action :add

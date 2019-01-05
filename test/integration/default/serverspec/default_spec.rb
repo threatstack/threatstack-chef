@@ -6,6 +6,7 @@ describe package('threatstack-agent') do
   it { should be_installed }
 end
 
-describe service('cloudsight') do
+describe service('threatstack') do
+  it { should be_running }
   it { should be_enabled }
 end

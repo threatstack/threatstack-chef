@@ -2,7 +2,7 @@
 # Cookbook Name:: threatstack
 # Attributes:: default
 #
-# Copyright 2014-2015, Threat Stack
+# Copyright 2014-2019, Threat Stack
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,11 @@
 #
 
 default['threatstack']['version'] = nil
-default['threatstack']['pkg_action'] = :install
-# If you want to send custom package options to the package resource
-# use the attribute below
-default['threatstack']['pkg_opts'] = nil
 # If no rulesets are specified the agent will register to the default
 # rule set, according to a comment in recipes/default.rb
 default['threatstack']['rulesets'] = []
 default['threatstack']['hostname'] = nil
-default['threatstack']['ignore_failure'] = true
+default['threatstack']['ignore_failure'] = false
 
 # You can set the deploy key directly, or use the encrypted databag
 # parameters below. The value searched for will be 'deploy_key'
@@ -34,20 +30,12 @@ default['threatstack']['deploy_key'] = nil
 default['threatstack']['data_bag_name'] = 'threatstack'
 default['threatstack']['data_bag_item'] = 'api_keys'
 
-# Threat Stack feature plan.  Valid string values:
-# * investigate: Investigate package
-# * monitor: Monitor package
-# * legacy: Legacy Basic, Pro, Advanced packages
-#
-# See: https://www.threatstack.com/plans
-default['threatstack']['feature_plan'] = nil
-
 # Control the configuration of the Threat Stack agent.  Useful when installing
 # agent into images.
-default['threatstack']['configure_agent'] = true
-# Pass aditional arguments to the agent during setup
-default['threatstack']['agent_extra_args'] = ''
 default['threatstack']['agent_config_args'] = []
+
+# To enable host-based containers observation
+default['threatstack']['enable_containers'] = nil
 
 # if configure_agent=false then we remove start in the cookbook
 default['threatstack']['cloudsight_service_action'] = %i[enable start]

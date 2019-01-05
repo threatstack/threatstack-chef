@@ -1,5 +1,5 @@
 default['threatstack']['repo_enable'] = true
-default['threatstack']['repo']['components'] = ['stable']
+default['threatstack']['repo']['components'] = ['main']
 
 case node['platform_family']
 when 'debian'
@@ -9,7 +9,7 @@ when 'debian'
 when 'rhel', 'fedora', 'amazon'
   case node['platform']
   when 'amazon'
-    default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon'
+    default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon/2'
   when 'centos', 'redhat'
     default['threatstack']['repo']['url'] = "https://pkg.threatstack.com/v2/EL/#{node['platform_version'].to_i}"
   else
