@@ -96,9 +96,9 @@ describe 'threatstack::default' do
       end.converge(described_recipe)
     end
 
-    it 'enables container observation vis tsagent config' do
-      expect(chef_run).to run_execute('tsagent config').with(
-        command: 'tsagent config --set enable_containers 1; '
+    it 'enables container observation via tsagent config' do
+      expect(chef_run).to render_file('/opt/threatstack/etc/chef_args_cache.txt').with_content(
+        'tsagent config --set enable_containers 1;'
       )
     end
   end
@@ -111,10 +111,15 @@ describe 'threatstack::default' do
       end.converge(described_recipe)
     end
 
-    it 'executes the tsagent setup with a configured hostname' do
-      expect(chef_run).to run_execute('tsagent config').with(
-        command: 'tsagent config --set foo 1; tsagent config --set bar 1; '
+    it 'enables container observation via tsagent config' do
+      expect(chef_run).to render_file('/opt/threatstack/etc/chef_args_cache.txt').with_content(
+        'tsagent config --set foo 1; tsagent config --set bar 1;'
       )
+    end
+
+    it 'notifies tsagent config from the file resource' do
+      args_file = chef_run.file('/opt/threatstack/etc/chef_args_cache.txt')
+      expect(args_file).to notify('execute[tsagent config]')
     end
 
     it 'still runs setup' do
@@ -129,6 +134,10 @@ describe 'threatstack::default' do
       ChefSpec::SoloRunner.new do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
+    end
+
+    it 'does not write to config cache file' do
+      expect(chef_run).to_not render_file('/opt/threatstack/etc/chef_args_cache.txt')
     end
 
     it 'does not run tsagent config by default' do

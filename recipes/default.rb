@@ -82,6 +82,22 @@ unless node['threatstack']['rulesets'].empty?
   cmd += " --ruleset='#{rulesets_string}'"
 end
 
+#### Setup happens here ####
+execute 'tsagent setup' do
+  command cmd
+  action :run
+  retries 3
+  timeout 60
+  ignore_failure node['threatstack']['ignore_failure']
+  sensitive true
+  not_if do
+    ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
+  end
+  # default to delayed start in case config is needed.
+  notifies :start, 'service[threatstack]'
+end
+
+#### Config-specific work below ####
 # tsagent configuration settings/flags
 # We need to create a duplicate of the node attribute
 # since we may change the variable's value later.
@@ -101,28 +117,25 @@ unless agent_config_args.empty?
   end
 end
 
-execute 'tsagent setup' do
-  command cmd
-  action :run
-  retries 3
-  timeout 60
-  ignore_failure node['threatstack']['ignore_failure']
-  sensitive true
-  not_if do
-    ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
-  end
-  # default to delayed start in case config is needed.
-  notifies :start, 'service[threatstack]'
+# Store config statements in a file, which will help us understand
+# if they have changed since previous chef runs, and determine if we should
+# restart the agent so new config goes into effect.
+file '/opt/threatstack/etc/chef_args_cache.txt' do
+  content config_command
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+  not_if { config_command == '' }
+  notifies :run, 'execute[tsagent config]', :immediately
 end
 
 # Config must be run prior to starting the agent. If config is run after the agent is
-# started, then the agent must be restarted. This cookbook does not support that
-# particular scenario.
-unless config_command == ''
-  execute 'tsagent config' do
-    command config_command
-    action :run
-    retries 3
-    timeout 10
-  end
+# started, then the agent must be restarted.
+execute 'tsagent config' do
+  command config_command
+  retries 3
+  timeout 10
+  action :nothing
+  notifies :restart, 'service[threatstack]'
 end
