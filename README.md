@@ -7,7 +7,7 @@ Threat Stack Cookbook
 [travis]: https://travis-ci.org/threatstack/threatstack-chef
 [cookbook]: https://supermarket.chef.io/cookbooks/threatstack
 
-** NOTE **: As of 2.x of this cookbook we only explicitly support chef 12.15 or greater.
+** NOTE **: As of 3.x of this cookbook we only explicitly support version 2.x of the threatstack agent and greater.
 
 Chef recipes to deploy the Threat Stack server agent
 
@@ -18,7 +18,7 @@ Requirements
 Platforms
 ---------
 
-* Amazon Linux
+* Amazon Linux 2
 * CentOS
 * RedHat
 * Ubuntu
@@ -48,7 +48,7 @@ Usage
 
 1. Add this cookbook to your Chef Server or add to your Berksfile
   ```
-  cookbook 'threatstack', '~> 1.0.0'
+  cookbook 'threatstack', '~> 3.0.0'
   ```
 
 2. Add your deploy api key. The recommended way is to use an encrypted databag
@@ -60,7 +60,7 @@ Setting the key will disable the encrypted data bag lookup.
 Additionally you we can read the deploy key from the `node.run_state['threatstack']['deploy_key']` location
 Simply set the value of the deploy key in the run state at that location.
 
-3. Set the `node['threatstack']['feature_plan']` appropriately for your organzation
+3. Set the `node['threatstack']['rulesets']` appropriately for your node(s). This attribute is an array.
 
 4. Add this recipe to your runlist or include in another recipe
 

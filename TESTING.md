@@ -23,7 +23,7 @@ To run linting only:
 ```
 bundle exec rake style
 ```
-To run all tests:
+To run all unit and linting tests:
 ```
 bundle exec rake
 ```
@@ -39,5 +39,5 @@ Get your deployment key from the Threat Stack application under "Settings" -> "A
 
 ```
 export TS_DEPLOY_KEY=<deploy key>
-kitchen test
+bundle exec kitchen test
 ```

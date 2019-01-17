@@ -36,10 +36,3 @@ default['threatstack']['agent_config_args'] = []
 
 # To enable host-based containers observation
 default['threatstack']['enable_containers'] = nil
-
-# if configure_agent=false then we remove start in the cookbook
-default['threatstack']['cloudsight_service_action'] = %i[enable start]
-
-# Determines whether to start/restart the agent during or at the end of a
-# converge. Should be a valid Chef timer.
-default['threatstack']['cloudsight_service_timer'] = 'immediately'
