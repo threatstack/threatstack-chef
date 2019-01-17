@@ -5,19 +5,17 @@ script:
 cache: bundler
 sudo: required
 rvm:
-  - 2.3
   - 2.4
+  - 2.5
+  - 2.6
 before_install:
-  - gem update --system 2.6.6
-  - gem --version
+  - gem update --system 3.0.2
 env:
   - CHEF_VERSION="= 12.21.14"
   - CHEF_VERSION=">= 0.0.0"   # installs latest
 
 matrix:
   exclude:
-  - rvm: 2.3
-    env: CHEF_VERSION=">= 0.0.0"
   - rvm: 2.4
     env: CHEF_VERSION="= 12.21.14"
 

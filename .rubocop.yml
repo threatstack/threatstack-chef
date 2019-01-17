@@ -14,3 +14,5 @@ LineLength:
   Enabled: false
 Metrics/BlockNesting:
   Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false

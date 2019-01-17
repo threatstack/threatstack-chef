@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe 'threatstack::default' do
-  context 'debian-wheezy' do
+
+  context 'debian-jessie' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
-        version: '7.8'
+        version: '8.10'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -19,7 +19,29 @@ describe 'threatstack::default' do
 
     it 'sets up the apt repository' do
       expect(chef_run).to add_apt_repository('threatstack').with(
-        distribution: 'wheezy'
+        distribution: 'jessie'
+      )
+    end
+  end
+
+  context 'debian-stretch' do
+    let(:chef_run) do
+      runner = ChefSpec::SoloRunner.new(
+        platform: 'debian',
+        version: '9.3'
+      ) do |node|
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+      end
+      runner.converge(described_recipe)
+    end
+
+    it 'installs the apt-transport-http package' do
+      expect(chef_run).to install_package('apt-transport-https')
+    end
+
+    it 'sets up the apt repository' do
+      expect(chef_run).to add_apt_repository('threatstack').with(
+        distribution: 'stretch'
       )
     end
   end
@@ -31,7 +53,6 @@ describe 'threatstack::default' do
         version: '14.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -50,7 +71,6 @@ describe 'threatstack::default' do
         version: '16.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -62,14 +82,31 @@ describe 'threatstack::default' do
     end
   end
 
+  context 'ubuntu-bionic' do
+    let(:chef_run) do
+      runner = ChefSpec::SoloRunner.new(
+        platform: 'ubuntu',
+        version: '18.04'
+      ) do |node|
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+      end
+      runner.converge(described_recipe)
+    end
+
+    it 'sets up the apt repository' do
+      expect(chef_run).to add_apt_repository('threatstack').with(
+        distribution: 'bionic'
+      )
+    end
+  end
+
   context 'redhat' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'redhat',
-        version: '6.5'
+        version: '7.4'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -80,8 +117,8 @@ describe 'threatstack::default' do
 
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
-        description: 'Threat Stack',
-        baseurl: 'https://pkg.threatstack.com/EL/6',
+        description: 'Threat Stack Package Repository',
+        baseurl: 'https://pkg.threatstack.com/v2/EL/7',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
@@ -91,10 +128,9 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'centos',
-        version: '6.5'
+        version: '7.4'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -105,21 +141,20 @@ describe 'threatstack::default' do
 
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
-        description: 'Threat Stack',
-        baseurl: 'https://pkg.threatstack.com/EL/6',
+        description: 'Threat Stack Package Repository',
+        baseurl: 'https://pkg.threatstack.com/v2/EL/7',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
   end
 
-  context 'amazon' do
+  context 'amazon linux 1' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'amazon',
-        version: '2012.09'
+        version: '2017.09'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -130,21 +165,20 @@ describe 'threatstack::default' do
 
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
-        description: 'Threat Stack',
-        baseurl: 'https://pkg.threatstack.com/Amazon',
+        description: 'Threat Stack Package Repository',
+        baseurl: 'https://pkg.threatstack.com/v2/Amazon/2',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
   end
 
-  context 'fedora' do
+  context 'amazon linux 2' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
-        platform: 'fedora',
-        version: '25'
+        platform: 'amazon',
+        version: '2'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['feature_plan'] = 'investigate'
       end
       runner.converge(described_recipe)
     end
@@ -155,8 +189,8 @@ describe 'threatstack::default' do
 
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
-        description: 'Threat Stack',
-        baseurl: 'https://pkg.threatstack.com/EL/7',
+        description: 'Threat Stack Package Repository',
+        baseurl: 'https://pkg.threatstack.com/v2/Amazon/2',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end

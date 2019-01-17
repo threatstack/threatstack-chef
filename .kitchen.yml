@@ -9,10 +9,10 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
   - name: ubuntu-16.04
-  - name: debian-7.8
-  - name: centos-6.7
-  - name: centos-7.3
-  - name: fedora-25
+  - name: ubuntu-18.04
+  - name: debian-8.11
+  - name: debian-9.5
+  - name: centos-7.5
 
 suites:
   - name: default
@@ -25,9 +25,32 @@ suites:
         compile_time_update: true
       threatstack:
         deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
-        feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
-        agent_config_args:
-          - <%= ENV['TS_CONFIG_ARGS'] %>
-        version: <%= ENV['TS_PACKAGE_VERSION'] %>
-        cloudsight_service_action: <%= ENV['TS_SERVICE_ACTION'] != nil ? ENV['TS_SERVICE_ACTION'] : 'enable' %>
+#        feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
+        # agent_config_args:
+        #   - <%= ENV['TS_CONFIG_ARGS'] %>
+        url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
+        version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
         configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>
+        repo:
+          url: <%= ENV['TS_REPO_URL'] != nil ? ENV['TS_REPO_URL'] : nil %>
+          key: <%= ENV['TS_REPO_KEY'] != nil ? ENV['TS_REPO_KEY'] : nil %>
+
+  - name: custom
+    run_list:
+      - recipe[threatstack]
+    provisioner:
+      encrypted_data_bag_secret_key_path: test/integration/data_bags/insecure_data_bag_secret
+    attributes:
+      apt:
+        compile_time_update: true
+      threatstack:
+        deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
+#        feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
+        # agent_config_args:
+        #   - <%= ENV['TS_CONFIG_ARGS'] %>
+        url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
+        version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
+        agent_config_args: <%= ENV['TS_CONFIG_ARGS'] != [] ? ENV['TS_CONFIG_ARGS'] : [] %>
+        repo:
+          url: <%= ENV['TS_REPO_URL'] != nil ? ENV['TS_REPO_URL'] : nil %>
+          key: <%= ENV['TS_REPO_KEY'] != nil ? ENV['TS_REPO_KEY'] : nil %>
