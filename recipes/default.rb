@@ -43,10 +43,14 @@ if node['threatstack']['repo_enable']
 end
 
 # Disable auditd on amazon linux
-if platform_family?('amazon')
-  service 'auditd' do
-    action %i[stop disable]
-  end
+execute 'stop_auditd' do
+  command 'service auditd stop'
+  only_if { platform_family?('amazon') }
+end
+
+execute 'disable_auditd' do
+  command 'systemctl disable auditd'
+  only_if { platform_family?('amazon') }
 end
 
 package 'threatstack-agent' do
@@ -56,6 +60,8 @@ package 'threatstack-agent' do
   else
     action :install
   end
+  notifies :run, 'execute[stop_auditd]', :before
+  notifies :run, 'execute[disable_auditd]', :before
 end
 
 if node.run_state.key?('threatstack')
