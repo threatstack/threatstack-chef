@@ -42,6 +42,13 @@ if node['threatstack']['repo_enable']
   end
 end
 
+# Disable auditd on amazon linux
+if platform_family?('amazon')
+  service 'auditd' do
+    action [:stop, :disable]
+  end
+end
+
 package 'threatstack-agent' do
   version node['threatstack']['version'] if node['threatstack']['version']
   if node['threatstack']['version'].nil?
