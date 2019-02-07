@@ -45,7 +45,7 @@ end
 # Disable auditd on amazon linux
 if platform_family?('amazon')
   service 'auditd' do
-    action [:stop, :disable]
+    action %i[stop disable]
   end
 end
 
