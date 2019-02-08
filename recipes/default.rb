@@ -43,7 +43,7 @@ if node['threatstack']['repo_enable']
 end
 
 # Disable auditd on amazon linux
-execute 'stop_auditd' do
+execute 'stop_auditd' do # ~FC004 This is a workaround for auditd not stoppable with the standard method
   command 'service auditd stop'
   only_if { platform_family?('amazon') }
 end
