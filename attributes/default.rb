@@ -36,3 +36,7 @@ default['threatstack']['agent_config_args'] = []
 
 # To enable host-based containers observation
 default['threatstack']['enable_containers'] = nil
+
+# To install the agent, but skip configuration for later, set this flag to true
+# This can be useful in the case of baking an AMI for deployment later
+default['threatstack']['install_only'] = false
