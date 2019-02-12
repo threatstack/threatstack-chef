@@ -98,6 +98,11 @@ describe 'threatstack::default' do
         distribution: 'bionic'
       )
     end
+
+    it 'doesnt worry about auditd' do
+      expect(chef_run).to_not run_execute('stop_auditd')
+      expect(chef_run).to_not run_execute('disable_auditd')
+    end
   end
 
   context 'redhat' do
@@ -121,6 +126,11 @@ describe 'threatstack::default' do
         baseurl: 'https://pkg.threatstack.com/v2/EL/7',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
+    end
+
+    it 'stops and disables auditd' do
+      expect(chef_run).to run_execute('stop_auditd')
+      expect(chef_run).to run_execute('disable_auditd')
     end
   end
 
@@ -194,5 +204,10 @@ describe 'threatstack::default' do
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end
+    it 'stops and disables auditd' do
+      expect(chef_run).to run_execute('stop_auditd')
+      expect(chef_run).to run_execute('disable_auditd')
+    end
+
   end
 end
