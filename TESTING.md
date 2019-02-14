@@ -39,5 +39,6 @@ Get your deployment key from the Threat Stack application under "Settings" -> "A
 
 ```
 export TS_DEPLOY_KEY=<deploy key>
+export TS_CONFIG_ARGS=['fim.log yes']
 bundle exec kitchen test
 ```
