@@ -149,7 +149,34 @@ describe 'threatstack::default' do
         command: "tsagent setup --deploy-key=ABCD1234"
       )
     end
-  end  
+  end
+
+  context 'install only' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+        node.normal['threatstack']['install_only'] = true
+      end.converge(described_recipe)
+    end
+
+    it 'does not write to config cache file' do
+      expect(chef_run).to_not render_file('/opt/threatstack/etc/chef_args_cache.txt')
+    end
+
+    it 'does not run tsagent config by default' do
+      expect(chef_run).to_not run_execute('tsagent config')
+    end
+
+    it 'does not run setup' do
+      expect(chef_run).to_not run_execute('tsagent setup').with(
+        command: "tsagent setup --deploy-key=ABCD1234"
+      )
+    end
+
+    it 'still installs the agent' do
+      expect(chef_run).to upgrade_package('threatstack-agent')
+    end
+  end
 
   context 'hostname-test' do
     let(:chef_run) do
