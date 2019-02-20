@@ -17,6 +17,7 @@ platforms:
 suites:
   - name: default
     run_list:
+      - recipe[setup]
       - recipe[threatstack]
     provisioner:
       encrypted_data_bag_secret_key_path: test/integration/data_bags/insecure_data_bag_secret
@@ -37,6 +38,7 @@ suites:
 
   - name: custom
     run_list:
+      - recipe[setup]
       - recipe[threatstack]
     provisioner:
       encrypted_data_bag_secret_key_path: test/integration/data_bags/insecure_data_bag_secret
