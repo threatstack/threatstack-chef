@@ -20,4 +20,3 @@
 # default threatstack recipe so that companies can decide
 # how often to run it on their own.
 apt_update unless platform_family?('fedora', 'amazon')
-  
