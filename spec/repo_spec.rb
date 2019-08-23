@@ -176,7 +176,7 @@ describe 'threatstack::default' do
     it 'sets up the yum repository' do
       expect(chef_run).to add_yum_repository('threatstack').with(
         description: 'Threat Stack Package Repository',
-        baseurl: 'https://pkg.threatstack.com/v2/Amazon/2',
+        baseurl: 'https://pkg.threatstack.com/v2/Amazon/1',
         gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-THREATSTACK'
       )
     end

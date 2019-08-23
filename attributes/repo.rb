@@ -9,10 +9,11 @@ when 'debian'
 when 'rhel', 'fedora', 'amazon'
   case node['platform']
   when 'amazon'
-    if node['platform_version'] == 2
-      default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon'
-    else
+    if node['platform_version'] == '2'
       default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon/2'
+    else
+      default['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon/1'
+    end
   when 'centos', 'redhat'
     default['threatstack']['repo']['url'] = "https://pkg.threatstack.com/v2/EL/#{node['platform_version'].to_i}"
   else
