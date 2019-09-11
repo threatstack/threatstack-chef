@@ -1,0 +1,83 @@
+---
+driver:
+  name: ec2
+  availability_zone: d
+  iam_profile_name: <%= ENV['AWS_IAM_PROFILE'] %>
+  instance_type: t2.medium
+  interface: private
+  region: us-east-1
+  security_group_ids: [<%= ENV['SG_GROUP_IDS'] %>]
+  subnet_id: <%= ENV['SG_SUBNET_ID'] %>
+  tags: { "created-by": "test-kitchen", "Name": "tsagent-test", "owner": <%= ENV['USER'] %> }
+
+provisioner:
+  product_name: chef
+  product_version: 13
+
+transport:
+  ssh_key: <%= ENV['AWS_SSH_KEY'] %>
+  connection_timeout: 10
+  connection_retries: 5
+  max_ssh_sessions: 5
+
+
+platforms:
+  - name: amazon
+  - name: amazon-201709
+    driver:
+      image_search:
+        owner-id: ENV['IMAGE_OWNER_ID']
+        name: "amzn-ami-*-2017.09*"
+    transport:
+      username: ec2-user
+  - name: amazon-201803
+    driver:
+      image_id: ami-00eb20669e0990cb4 # Amz-produced image
+    transport:
+      username: ec2-user
+  - name: amazon2
+    transport:
+      username: ec2-user
+
+suites:
+  - name: default
+    run_list:
+      - recipe[setup]
+      - recipe[threatstack]
+    provisioner:
+      encrypted_data_bag_secret_key_path: test/integration/data_bags/insecure_data_bag_secret
+    attributes:
+      apt:
+        compile_time_update: true
+      threatstack:
+        deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
+#        feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
+        # agent_config_args:
+        #   - <%= ENV['TS_CONFIG_ARGS'] %>
+        url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
+        version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
+        configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>
+        repo:
+          url: <%= ENV['TS_REPO_URL'] != nil ? ENV['TS_REPO_URL'] : nil %>
+          key: <%= ENV['TS_REPO_KEY'] != nil ? ENV['TS_REPO_KEY'] : nil %>
+
+  - name: custom
+    run_list:
+      - recipe[setup]
+      - recipe[threatstack]
+    provisioner:
+      encrypted_data_bag_secret_key_path: test/integration/data_bags/insecure_data_bag_secret
+    attributes:
+      apt:
+        compile_time_update: true
+      threatstack:
+        deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
+#        feature_plan: <%= ENV['TS_FEATURE_PLAN'] != nil ? ENV['TS_FEATURE_PLAN'] : 'monitor' %>
+        # agent_config_args:
+        #   - <%= ENV['TS_CONFIG_ARGS'] %>
+        url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
+        version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
+        agent_config_args: <%= ENV['TS_CONFIG_ARGS'] != [] ? ENV['TS_CONFIG_ARGS'] : [] %>
+        repo:
+          url: <%= ENV['TS_REPO_URL'] != nil ? ENV['TS_REPO_URL'] : nil %>
+          key: <%= ENV['TS_REPO_KEY'] != nil ? ENV['TS_REPO_KEY'] : nil %>

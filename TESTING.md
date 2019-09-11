@@ -42,3 +42,10 @@ export TS_DEPLOY_KEY=<deploy key>
 export TS_CONFIG_ARGS=['fim.log yes']
 bundle exec kitchen test
 ```
+
+To test using ec2 instead of vagrant, then use the `.kitchen.ec2.yml` configuration file. You may need additional environment variables set for those tests (such as `AWS_SECRET_ACCESS_KEY`, `AWS_ACCESS_KEY_ID`, `AWS_SSH_KEY`, `SG_GROUP_IDS`, `SG_SUBNET_ID`, or IMAGE_OWNER_ID`. You may not need all of those, but you likely need the AWS- ones for native kitchen-ec2 provisioning. 
+
+To run tests on EC2, run commands as follows: 
+```
+KITCHEN_YAML=".kitchen.ec2.yml" bundle exec kitchen test
+```

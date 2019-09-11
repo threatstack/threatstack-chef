@@ -18,6 +18,9 @@
 
 service 'threatstack' do
   supports status: true, restart: true, start: true, stop: true
+  if platform?('amazon') && node['platform_version'] != '2'
+    provider Chef::Provider::Service::Upstart
+  end
 end
 
 if node.run_state.key?('threatstack')
