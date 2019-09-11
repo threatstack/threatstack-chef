@@ -22,22 +22,6 @@
 # == the agent, refer to older versions of this cookbook, tagged
 # == in the git repo.
 
-command =<<-SRV
-if [[ `/sbin/init --version` =~ upstart ]]; then echo upstart;
-elif [[ `systemctl` =~ -\.mount ]]; then echo systemd;
-elif [[ -f /etc/init.d/cron && ! -h /etc/init.d/cron ]]; then echo sysv-init;
-else echo unknown;
-fi
-SRV
-command_out = shell_out(command)
-node.default['service_manager'] = command_out.stdout.strip
-
-if node['service_manager'] == 'upstart'
-    node.override['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon/1'
-else
-    node.override['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon/2'
-end
-
 unless node['threatstack']['version'].nil?
   if node['threatstack']['version'].start_with?('1.')
     error_string = "Deprecation Error: Unsupported agent version detected ( #{node['threatstack']['version']} ).\n"
