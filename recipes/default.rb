@@ -41,12 +41,12 @@ end
 # Disable auditd on amazon linux 2, RHEL, and CentOS
 execute 'stop_auditd' do # ~FC004 This is a workaround for auditd not stoppable with the standard method
   command 'service auditd stop'
-  only_if { platform?('amazon') && node['service_manager'] != 'upstart' || platform?('centos', 'redhat') }
+  only_if { platform?('amazon') && node['platform_version'] == '2' || platform?('centos', 'redhat') }
 end
 
 execute 'disable_auditd' do
   command 'systemctl disable auditd'
-  only_if { platform?('amazon') && node['service_manager'] != 'upstart' || platform?('centos', 'redhat') }
+  only_if { platform?('amazon') && node['platform_version'] == '2' || platform?('centos', 'redhat') }
 end
 
 package 'threatstack-agent' do

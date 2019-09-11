@@ -16,22 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-command = <<~SRV
-  if [[ `/sbin/init --version` =~ upstart ]]; then echo upstart;
-  elif [[ `systemctl` =~ -\.mount ]]; then echo systemd;
-  elif [[ -f /etc/init.d/cron && ! -h /etc/init.d/cron ]]; then echo sysv-init;
-  else echo unknown;
-  fi
-SRV
-command_out = shell_out(command)
-node.default['service_manager'] = command_out.stdout.strip
-
-if node['service_manager'] == 'upstart'
-  node.override['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon/1'
-else
-  node.override['threatstack']['repo']['url'] = 'https://pkg.threatstack.com/v2/Amazon/2'
-end
-
 remote_file node['threatstack']['repo']['key_file'] do
   source node['threatstack']['repo']['key']
   owner 'root'
