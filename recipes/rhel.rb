@@ -28,5 +28,6 @@ yum_repository 'threatstack' do
   description 'Threat Stack Package Repository'
   baseurl node['threatstack']['repo']['url']
   gpgkey node['threatstack']['repo']['key_file_uri']
+  gpgcheck node['threatstack']['validate_gpg_key']
   action :add
 end
