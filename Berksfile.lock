@@ -7,4 +7,4 @@ DEPENDENCIES
 
 GRAPH
   setup (0.0.1)
-  threatstack (3.0.2)
+  threatstack (3.0.3)
