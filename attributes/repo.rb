@@ -1,4 +1,5 @@
 default['threatstack']['repo_enable'] = true
+default['threatstack']['validate_gpg_key'] = true
 default['threatstack']['repo']['components'] = ['main']
 
 case node['platform_family']

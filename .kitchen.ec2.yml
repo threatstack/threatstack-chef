@@ -22,22 +22,41 @@ transport:
 
 
 platforms:
-  - name: amazon
-  - name: amazon-201709
+  - name: amazon1-201709
     driver:
-      image_search:
-        owner-id: ENV['IMAGE_OWNER_ID']
-        name: "amzn-ami-*-2017.09*"
+      image_id: ami-1853ac65 # Amz-produced image
     transport:
       username: ec2-user
-  - name: amazon-201803
+  - name: amazon1-201803
     driver:
       image_id: ami-00eb20669e0990cb4 # Amz-produced image
     transport:
       username: ec2-user
-  - name: amazon2
+  - name: amazon2-201908
+    driver:
+      image_id: ami-077381babe7660807 # Amz-produced image
     transport:
       username: ec2-user
+  - name: ubuntu-bionic
+    driver:
+      image_id: ami-064a0193585662d74 # Ubuntu-produced image
+    transport:
+      username: ubuntu
+  - name: ubuntu-xenial
+    driver:
+      image_id: ami-0378588b4ae11ec24 # Ubuntu-produced image
+    transport:
+      username: ubuntu
+  - name: debian-stretch
+    driver:
+      image_id: ami-0ed2d2283aa1466df # Debian-produced image
+    transport:
+      username: admin
+  - name: centos-7
+    driver:
+      image_id: ami-02eac2c0129f6376b # CentOS-produced image
+    transport:
+      username: centos
 
 suites:
   - name: default
