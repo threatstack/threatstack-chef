@@ -18,7 +18,7 @@ Requirements
 Platforms
 ---------
 
-* Amazon Linux 2
+* Amazon Linux
 * CentOS
 * RedHat
 * Ubuntu
