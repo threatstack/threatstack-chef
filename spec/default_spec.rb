@@ -103,6 +103,37 @@ describe 'threatstack::default' do
     end
   end
 
+  context 'dont-enable-containers-when-attr-false' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.normal['threatstack']['enable_containers'] = false
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+      end.converge(described_recipe)
+    end
+
+    it 'doesnt enable container observation when attr is false' do
+      expect(chef_run).to_not render_file('/opt/threatstack/etc/chef_args_cache.txt').with_content(
+        'tsagent config --set enable_containers 1;'
+      )
+    end
+  end
+
+  context 'dont-enable-containers-when-attr-nil' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.normal['threatstack']['enable_containers'] = nil
+        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
+      end.converge(described_recipe)
+    end
+
+    it 'doesnt enable container observation when attr nil' do
+      expect(chef_run).to_not render_file('/opt/threatstack/etc/chef_args_cache.txt').with_content(
+        'tsagent config --set enable_containers 1;'
+      )
+    end
+  end
+
+
   context 'agent-extra-args' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
@@ -111,7 +142,7 @@ describe 'threatstack::default' do
       end.converge(described_recipe)
     end
 
-    it 'enables container observation via tsagent config' do
+    it 'sets tsagent config' do
       expect(chef_run).to render_file('/opt/threatstack/etc/chef_args_cache.txt').with_content(
         'tsagent config --set foo 1; tsagent config --set bar 1;'
       )

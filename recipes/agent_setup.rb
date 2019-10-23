@@ -77,7 +77,7 @@ agent_config_args = node['threatstack']['agent_config_args'].dup
 
 # By default, container observation is off; this setting will
 # turn it on.
-unless node['threatstack']['enable_containers'].nil?
+if node['threatstack']['enable_containers'] == true
   agent_config_args.push('enable_containers 1')
 end
 
