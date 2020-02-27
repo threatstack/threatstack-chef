@@ -68,10 +68,10 @@ end
 
 # How we can verify what is installed is what is defined to be installed
 # See: http://www.hurryupandwait.io/blog/accessing-chef-node-attributes-from-kitchen-tests
-ruby_block "Save node attributes" do
+ruby_block 'Save node attributes' do
   block do
-    if Dir::exist?('/tmp/')
-      IO.write("/tmp/chef_node_for_tests.json", node.to_json)
+    if Dir.exist?('/tmp/')
+      IO.write('/tmp/chef_node_for_tests.json', node.to_json)
     end
   end
 end
