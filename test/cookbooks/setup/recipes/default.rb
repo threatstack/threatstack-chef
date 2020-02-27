@@ -2,7 +2,7 @@
 # Cookbook Name:: setup
 # Recipe:: default
 #
-# Copyright 2014-2019, Threat Stack
+# Copyright 2014-2020, Threat Stack
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,4 +19,4 @@
 # Set up tests to run apt update. It's not run as part of
 # default threatstack recipe so that companies can decide
 # how often to run it on their own.
-apt_update unless platform_family?('fedora', 'amazon')
+apt_update unless platform_family?('rhel', 'fedora', 'amazon')
