@@ -46,24 +46,6 @@ describe 'threatstack::default' do
     end
   end
 
-  context 'ubuntu-trusty' do
-    let(:chef_run) do
-      runner = ChefSpec::SoloRunner.new(
-        platform: 'ubuntu',
-        version: '14.04'
-      ) do |node|
-        node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-      end
-      runner.converge(described_recipe)
-    end
-
-    it 'sets up the apt repository' do
-      expect(chef_run).to add_apt_repository('threatstack').with(
-        distribution: 'trusty'
-      )
-    end
-  end
-
   context 'ubuntu-xenial' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(

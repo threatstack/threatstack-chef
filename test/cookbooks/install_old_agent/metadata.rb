@@ -1,0 +1,6 @@
+name             'install_old_agent'
+maintainer       'Threat Stack, Inc'
+maintainer_email 'support@threatstack.com'
+license          'Apache 2.0'
+description      'A test cookbook to prepare the test environment for: tests'
+version          '0.0.1'

@@ -7,7 +7,7 @@ Threat Stack Cookbook
 [travis]: https://travis-ci.org/threatstack/threatstack-chef
 [cookbook]: https://supermarket.chef.io/cookbooks/threatstack
 
-** NOTE **: As of 3.x of this cookbook we only explicitly support version 2.x of the threatstack agent and greater.
+**NOTE**: As of 3.x of this cookbook we only explicitly support version 2.x of the threatstack agent and greater.
 
 Chef recipes to deploy the Threat Stack server agent
 
@@ -22,6 +22,7 @@ Platforms
 * CentOS
 * RedHat
 * Ubuntu
+* Debian
 
 Cookbooks
 ---------
