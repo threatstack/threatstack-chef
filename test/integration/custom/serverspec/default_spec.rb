@@ -12,5 +12,5 @@ describe service('threatstack') do
 end
 
 describe command('tsagent config --list') do
-  its(:stdout) { should match /fim.log=yes/ } # rubocop: disable Lint/AmbiguousRegexpLiteral
+  its(:stdout) { should match /log.maxSize=22/ } # rubocop: disable Lint/AmbiguousRegexpLiteral
 end

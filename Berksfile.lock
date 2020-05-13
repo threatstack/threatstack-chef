@@ -1,4 +1,6 @@
 DEPENDENCIES
+  install_old_agent
+    path: test/cookbooks/install_old_agent
   setup
     path: test/cookbooks/setup
   threatstack
@@ -6,5 +8,6 @@ DEPENDENCIES
     metadata: true
 
 GRAPH
+  install_old_agent (0.0.1)
   setup (0.0.1)
   threatstack (3.0.3)

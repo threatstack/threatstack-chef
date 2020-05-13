@@ -228,7 +228,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(
         platform: 'ubuntu',
-        version: '14.04'
+        version: '16.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
@@ -243,10 +243,10 @@ describe 'threatstack::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(
         platform: 'ubuntu',
-        version: '14.04'
+        version: '18.04'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
-        node.normal['threatstack']['version'] = '2.0.0.0ubuntu14.56'
+        node.normal['threatstack']['version'] = '2.0.0.0ubuntu18.56'
       end.converge(described_recipe)
     end
 
@@ -259,7 +259,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(
         platform: 'redhat',
-        version: '6.8'
+        version: '7.4'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
