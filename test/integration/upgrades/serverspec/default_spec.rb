@@ -3,7 +3,7 @@ require 'serverspec'
 set :backend, :exec
 
 # Version to expect on install. Change this when we bump versions
-current_version = '2.2.0'
+current_version = '2.2.2'
 
 describe package('threatstack-agent') do
   it { should be_installed }
