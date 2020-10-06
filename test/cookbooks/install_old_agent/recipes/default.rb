@@ -19,29 +19,29 @@
 # Just install old agent, don't fire it up.
 if node['threatstack']['repo_enable']
   if platform_family?('rhel', 'fedora', 'amazon')
-    remote_file node['threatstack']['repo']['key_file'] do
-      source node['threatstack']['repo']['key']
+    remote_file node['threatstack']['old_agent']['repo']['key_file'] do
+      source node['threatstack']['old_agent']['repo']['key']
       owner 'root'
       group 'root'
       mode '0644'
       action :create
     end
 
-    yum_repository 'threatstack' do
+    yum_repository 'threatstack-old-agent' do
       description 'Threat Stack Package Repository'
-      baseurl node['threatstack']['repo']['url']
-      gpgkey node['threatstack']['repo']['key_file_uri']
-      gpgcheck node['threatstack']['validate_gpg_key']
+      baseurl node['threatstack']['old_agent']['repo']['url']
+      gpgkey node['threatstack']['old_agent']['repo']['key_file_uri']
+      gpgcheck node['threatstack']['old_agent']['validate_gpg_key']
       action :add
     end
   else
     package 'apt-transport-https'
 
-    apt_repository 'threatstack' do
-      uri node['threatstack']['repo']['url']
-      distribution node['threatstack']['repo']['dist']
-      components node['threatstack']['repo']['components']
-      key node['threatstack']['repo']['key']
+    apt_repository 'threatstack-old-agent' do
+      uri node['threatstack']['old_agent']['repo']['url']
+      distribution node['threatstack']['old_agent']['repo']['dist']
+      components node['threatstack']['old_agent']['repo']['components']
+      key node['threatstack']['old_agent']['repo']['key']
       action :add
     end
   end

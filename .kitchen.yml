@@ -21,6 +21,13 @@ platforms:
           url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL'] : nil %>
           key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
           components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+  - name: ubuntu-20.04
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL'] : nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
   - name: debian-8
     attributes:
       threatstack:
@@ -35,12 +42,26 @@ platforms:
           url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL'] : nil %>
           key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
           components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+  - name: debian-10
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL'] : nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
   - name: centos-7
     attributes:
       threatstack:
         repo:
           url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el7' : nil %>
           key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el7/repomd.xml.key' : nil %>
+        validate_gpg_key: false # This is ONLY for test purposes! Don't do this in your actual roles/recipes
+  - name: centos-8
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el8' : nil %>
+          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el8/repomd.xml.key' : nil %>
         validate_gpg_key: false # This is ONLY for test purposes! Don't do this in your actual roles/recipes
   - name: amazonlinux-2
     attributes:
@@ -72,6 +93,10 @@ suites:
       - recipe[threatstack]
     provisioner:
       encrypted_data_bag_secret_key_path: test/integration/data_bags/insecure_data_bag_secret
+    excludes:
+      - debian-10
+      - ubuntu-20.04
+      - centos-8
     attributes:
       apt:
         compile_time_update: true
@@ -79,6 +104,7 @@ suites:
         deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
         url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
         version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
+        configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>
   - name: custom
     run_list:
       - recipe[setup]
@@ -93,3 +119,4 @@ suites:
         url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
         version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
         agent_config_args: <%= ENV['TS_CONFIG_ARGS'] != [] ? ENV['TS_CONFIG_ARGS'] : ['log.maxSize 22'] %>
+        configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>
