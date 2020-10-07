@@ -105,6 +105,7 @@ suites:
         url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
         version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
         configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>
+        agent_config_args: <%= ENV['TS_CONFIG_ARGS'] != [] ? ENV['TS_CONFIG_ARGS'] : "['log.maxSize 22']" %>
   - name: custom
     run_list:
       - recipe[setup]
