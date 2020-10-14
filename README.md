@@ -90,3 +90,8 @@ Attributes
 Encrypted Data Bag Contents
 ===========================
 `deploy_key` - the deploy key for agent registration.
+
+Contributing enhancements/fixes
+===============================
+See the [CONTRIBUTING document](CONTRIBUTING.md) for details.
+
