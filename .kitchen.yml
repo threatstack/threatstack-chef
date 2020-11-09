@@ -118,5 +118,5 @@ suites:
         deploy_key: <%= ENV['TS_DEPLOY_KEY'] != nil ? ENV['TS_DEPLOY_KEY'] : nil %>
         url: <%= ENV['TS_URL'] != nil ? ENV['TS_URL'] : nil %>
         version: <%= ENV['TS_PACKAGE_VERSION'] != nil ? ENV['TS_PACKAGE_VERSION'] : nil %>
-        agent_config_args: <%= ENV['TS_CONFIG_ARGS'] != [] ? ENV['TS_CONFIG_ARGS'] : ['log.maxSize 22'] %>
+        agent_config_args: <%= ENV['TS_CONFIG_ARGS'] != nil ? ENV['TS_CONFIG_ARGS'] : ['log.maxSize 22'] %>
         configure_agent: <%= ENV['TS_CONFIG_AGENT'] == '0' ? false : true %>
