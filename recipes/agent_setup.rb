@@ -61,7 +61,7 @@ execute 'tsagent setup' do
   retries 3
   timeout 60
   ignore_failure node['threatstack']['ignore_failure']
-  # sensitive true
+  sensitive true
   not_if do
     ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
   end
