@@ -1,6 +1,11 @@
-1. Fork the repository using Github.
-2. Checkout a named feature branch created from the master branch.
-3. Write tests using chefspec as appropriate.
-4. Complete modifications or corrections.
-5. Run the tests, ensuring they all pass. (See TESTING.md)
-6. Submit a Pull Request to the master branch using Github.
+Contributing to Threat Stack Agent Chef Recipe
+=============================
+
+We encourage anyone to provide enchancements/fixes to this repository. Simply fork, commit, and then open a PR back to the parent repository.
+
+
+### What makes a good PR?
+
+* Make sure you update the README.md with any new/removed/changed values parameters.
+* Write tests that cover your proposed changes.
+* Make sure the tests documented in the [README](README.md) run as expected on all platforms.
