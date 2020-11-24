@@ -66,7 +66,7 @@ execute 'tsagent setup' do
     ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
   end
   # default to delayed start in case config is needed.
-  notifies :restart, 'service[threatstack]'
+  notifies :start, 'service[threatstack]'
 end
 
 #### Config-specific work below ####
