@@ -60,8 +60,4 @@ package 'threatstack-agent' do
   notifies :run, 'execute[disable_auditd]', :before
 end
 
-execute 'sleep because we need to wait for a thing' do
-  command 'sleep 20'
-end
-
 include_recipe 'threatstack::agent_setup' unless node['threatstack']['install_only'] == true
