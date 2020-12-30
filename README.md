@@ -32,7 +32,6 @@ The following Opscode cookbooks are dependencies:
 * `apt`
 * `yum`
 
-
 Recipes
 =======
 

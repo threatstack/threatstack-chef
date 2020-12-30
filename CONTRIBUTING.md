@@ -7,5 +7,5 @@ We encourage anyone to provide enchancements/fixes to this repository. Simply fo
 ### What makes a good PR?
 
 * Make sure you update the README.md with any new/removed/changed values parameters.
-* Write tests that cover your proposed changes.
+* Write tests that cover your proposed changes. (See the [TESTING](TESTING.md) documentation)
 * Make sure the tests documented in the [README](README.md) run as expected on all platforms.
