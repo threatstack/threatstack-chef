@@ -10,4 +10,4 @@ DEPENDENCIES
 GRAPH
   install_old_agent (0.0.1)
   setup (0.0.1)
-  threatstack (3.0.3)
+  threatstack (3.0.4)
