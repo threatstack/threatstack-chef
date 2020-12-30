@@ -1,5 +1,7 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
+gem 'stove', '= 6.1.1'
+
 group :development, :unit_tests , :test do
   gem 'rake', "13.0.1",         :require => false
   gem 'chefspec', '= 7.3.4',    :require => false
