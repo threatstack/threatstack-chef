@@ -19,7 +19,7 @@
 def ts_down?
   require 'open3'
   stdout, stderr, status = Open3.capture3('/usr/bin/tsagent status')
-  return stdout.include?('DOWN')
+  return !stdout.include?('UP Threat Stack Backend Connection')
 end
 
 def stale_agent?
