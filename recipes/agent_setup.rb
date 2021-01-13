@@ -62,9 +62,7 @@ execute 'tsagent setup' do
   timeout 60
   ignore_failure node['threatstack']['ignore_failure']
   sensitive true
-  not_if do
-    ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
-  end
+  only_if { ts_down? && stale_agent? }
   # default to delayed start in case config is needed.
   notifies :start, 'service[threatstack]'
 end
