@@ -38,15 +38,12 @@ if node['threatstack']['repo_enable']
   end
 end
 
-# Disable auditd on amazon linux 2, RHEL, and CentOS
-execute 'stop_auditd' do # ~FC004 This is a workaround for auditd not stoppable with the standard method
-  command 'service auditd stop'
-  only_if { platform?('amazon') && node['platform_version'] == '2' || platform?('centos', 'redhat') }
-end
-
-execute 'disable_auditd' do
-  command 'systemctl disable auditd'
-  only_if { platform?('amazon') && node['platform_version'] == '2' || platform?('centos', 'redhat') }
+# Disable auditd on amazon linux 2, RHEL, and CentOS. This used to
+# be a couple exec blocks because we hit a wall with this issue fairly
+# early, but this is a little cleaner.
+service 'auditd' do
+  action %w[stop disable]
+  stop_command 'service auditd stop'
 end
 
 package 'threatstack-agent' do
@@ -56,8 +53,6 @@ package 'threatstack-agent' do
   else
     action :install
   end
-  notifies :run, 'execute[stop_auditd]', :before
-  notifies :run, 'execute[disable_auditd]', :before
 end
 
 include_recipe 'threatstack::agent_setup' unless node['threatstack']['install_only'] == true
