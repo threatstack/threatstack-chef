@@ -6,11 +6,11 @@ AllCops:
     - spec/**/*
     - Gemfile
 
-ConditionalAssignment:
+Style/ConditionalAssignment:
   Enabled: false
-FrozenStringLiteralComment:
+Style/FrozenStringLiteralComment:
   Enabled: false
-LineLength:
+Layout/LineLength:
   Enabled: false
 Metrics/BlockNesting:
   Enabled: false
