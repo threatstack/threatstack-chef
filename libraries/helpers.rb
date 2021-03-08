@@ -22,25 +22,23 @@ def tsagent_info?(maj, min, patch)
   false
 end
 
-def ts_down?
-  require 'open3'
-  stdout, = Open3.capture3('/usr/bin/tsagent status')
-  !stdout.include?('UP Threat Stack Backend Connection')
-end
-
 def unregistered_agent?
   require 'open3'
   require 'yaml'
   require 'date'
+
+  # By the time this helper is hit, tsagent should exist - but, for tests it does not.
+  # Fair to say that the agent is *definitely* unregistered if tsagent isnt installed :)
+  return true unless ::File.exist?('/usr/bin/tsagent')
+
   stdout, = Open3.capture3('/usr/bin/tsagent info')
   stdout.gsub!("\t", '  ')
   tsagent_info = YAML.safe_load(stdout)
 
   return true if tsagent_info['LastBackendConnection'] == 'N/A'
 
-  # It could be stale if it last connected >24h ago. Would need to get ts_down? to know for sure.
-  # This is an option for folks if they leave machines off for 24h or more, but it might be a better
-  # function for a wrapper cookbook of some sort.
+  # It could be stale if it last connected >24h ago. Would need to exec tsagent status and search 
+  # for "UP Threat Stack Backend Connection" along with this to know for sure. 
   # return true if (DateTime.now.to_time - tsagent_info['LastBackendConnection']) / 3600 > 24.0
 
   # otherwise, probably fresh.

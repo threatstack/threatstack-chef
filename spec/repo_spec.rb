@@ -116,8 +116,7 @@ describe 'threatstack::default' do
     end
 
     it 'stops and disables auditd' do
-      expect(chef_run).to run_execute('stop_auditd')
-      expect(chef_run).to run_execute('disable_auditd')
+      expect(chef_run).to stop_service('auditd')
     end
   end
 
@@ -195,8 +194,7 @@ describe 'threatstack::default' do
       )
     end
     it 'stops and disables auditd' do
-      expect(chef_run).to run_execute('stop_auditd')
-      expect(chef_run).to run_execute('disable_auditd')
+      expect(chef_run).to stop_service('auditd')
     end
 
   end
