@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: threatstack
+# Cookbook:: threatstack
 # Recipe:: default
 #
-# Copyright 2014-2020, Threat Stack
+# Copyright:: 2014-2020, Threat Stack
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,10 +70,10 @@ execute 'tsagent setup' do
   timeout 60
   ignore_failure node['threatstack']['ignore_failure']
   sensitive true
-  only_if {
+  only_if do
     ts_ver = node['packages']['threatstack-agent']['version'].split('.')
-    has_tsagent_info(ts_ver[0].to_i,ts_ver[1].to_i,ts_ver[2].to_i) ? unregistered_agent? : ::File.exist?('/opt/threatstack/etc/agent.db')
-  }
+    tsagent_info?(ts_ver[0].to_i, ts_ver[1].to_i, ts_ver[2].to_i) ? unregistered_agent? : ::File.exist?('/opt/threatstack/etc/agent.db')
+  end
   # default to delayed start in case config is needed.
   notifies :start, 'service[threatstack]'
 end

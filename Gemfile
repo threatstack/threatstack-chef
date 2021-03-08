@@ -1,13 +1,10 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
-gem 'stove', '= 6.1.1'
-
 group :development, :unit_tests , :test do
-  gem 'rake', "13.0.1",         :require => false
-  gem 'chefspec', '= 7.3.4',    :require => false
-  gem 'berkshelf', '= 6.3.1'
-  gem 'rubocop', '= 0.61.1'
-  gem 'foodcritic', '= 15.1.0'
+  gem 'rake', "13.0.3",         :require => false
+  gem 'chefspec', '= 9.2.1',    :require => false
+  gem 'berkshelf', '= 7.2.0'
+  gem 'cookstyle', '= 6.16.10'
 end
 
 group :system_tests do

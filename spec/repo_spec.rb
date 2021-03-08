@@ -6,7 +6,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
-        version: '8.10'
+        version: '8.11'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
@@ -28,7 +28,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
-        version: '9.3'
+        version: '9.12'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
@@ -91,7 +91,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'redhat',
-        version: '7.4'
+        version: '7.8'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
@@ -120,7 +120,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'centos',
-        version: '7.4'
+        version: '7.8.2003'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
@@ -144,7 +144,7 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'amazon',
-        version: '2017.09'
+        version: '2018.03'
       ) do |node|
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end

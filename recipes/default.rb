@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: threatstack
+# Cookbook:: threatstack
 # Recipe:: default
 #
-# Copyright 2014-2020, Threat Stack
+# Copyright:: 2014-2020, Threat Stack
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ end
 # be a couple exec blocks because we hit a wall with this issue fairly
 # early, but this is a little cleaner.
 service 'auditd' do
-  action %w[stop disable]
+  action %w(stop disable)
   stop_command 'service auditd stop'
 end
 
