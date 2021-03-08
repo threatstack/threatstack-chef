@@ -37,8 +37,8 @@ def unregistered_agent?
 
   return true if tsagent_info['LastBackendConnection'] == 'N/A'
 
-  # It could be stale if it last connected >24h ago. Would need to exec tsagent status and search 
-  # for "UP Threat Stack Backend Connection" along with this to know for sure. 
+  # It could be stale if it last connected >24h ago. Would need to exec tsagent status and search
+  # for "UP Threat Stack Backend Connection" along with this to know for sure.
   # return true if (DateTime.now.to_time - tsagent_info['LastBackendConnection']) / 3600 > 24.0
 
   # otherwise, probably fresh.
