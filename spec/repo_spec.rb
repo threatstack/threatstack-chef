@@ -6,8 +6,9 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
-        version: '8.10'
+        version: '8.11'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -28,8 +29,9 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'debian',
-        version: '9.3'
+        version: '9.12'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -52,6 +54,7 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '16.04'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -70,6 +73,7 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '18.04'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -91,8 +95,9 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'redhat',
-        version: '7.4'
+        version: '7.8'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -111,8 +116,7 @@ describe 'threatstack::default' do
     end
 
     it 'stops and disables auditd' do
-      expect(chef_run).to run_execute('stop_auditd')
-      expect(chef_run).to run_execute('disable_auditd')
+      expect(chef_run).to stop_service('auditd')
     end
   end
 
@@ -120,8 +124,9 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'centos',
-        version: '7.4'
+        version: '7.8.2003'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -144,8 +149,9 @@ describe 'threatstack::default' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(
         platform: 'amazon',
-        version: '2017.09'
+        version: '2018.03'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -170,6 +176,7 @@ describe 'threatstack::default' do
         platform: 'amazon',
         version: '2'
       ) do |node|
+        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -187,8 +194,7 @@ describe 'threatstack::default' do
       )
     end
     it 'stops and disables auditd' do
-      expect(chef_run).to run_execute('stop_auditd')
-      expect(chef_run).to run_execute('disable_auditd')
+      expect(chef_run).to stop_service('auditd')
     end
 
   end

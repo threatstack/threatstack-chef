@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: install_old_agent
+# Cookbook:: install_old_agent
 # Recipe:: default
 #
-# Copyright 2014-2020, Threat Stack
+# Copyright:: 2014-2020, Threat Stack
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ if node['threatstack']['repo_enable']
   end
 end
 
-execute 'stop_auditd' do # ~FC004 This is a workaround for auditd not stoppable with the standard method
+execute 'stop_auditd' do
   command 'service auditd stop'
   only_if { platform?('amazon') && node['platform_version'] == '2' || platform?('centos', 'redhat') }
 end

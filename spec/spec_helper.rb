@@ -3,7 +3,7 @@ require 'chefspec'
 
 RSpec.configure do |config|
   config.platform = 'ubuntu'
-  config.version = '14.04'
+  config.version = '20.04'
 end
 
 ChefSpec::Coverage.start!

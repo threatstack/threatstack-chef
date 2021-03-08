@@ -1,23 +1,16 @@
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
-require 'foodcritic'
+require 'cookstyle'
 
-# Style tests. Rubocop and Foodcritic
+# Style tests. Cookstyle combines foodcritic and rubocop.
 namespace :style do
-  desc 'Run Ruby style checks'
-  RuboCop::RakeTask.new(:ruby)
-
-  desc 'Run Chef style checks'
-  FoodCritic::Rake::LintTask.new(:chef) do |t|
-    t.options = {
-      fail_tags: ['any'],
-      tags: ['~FC022']
-    }
+  RuboCop::RakeTask.new(:cookstyle) do |task|
+    task.options << '--display-cop-names'
   end
 end
 
 desc 'Run all style checks'
-task style: ['style:chef', 'style:ruby']
+task style: ['style:cookstyle']
 
 # Rspec and ChefSpec
 desc "Run ChefSpec examples"
