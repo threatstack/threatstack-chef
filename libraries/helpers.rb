@@ -42,6 +42,6 @@ def unregistered_agent?
   # function for a wrapper cookbook of some sort.
   #return true if (DateTime.now.to_time - tsagent_info['LastBackendConnection']) / 3600 > 24.0
 
-  # Otherwise, it's definitely fresh.
+  # otherwise, probably fresh.
   false
 end

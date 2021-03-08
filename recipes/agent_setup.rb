@@ -17,7 +17,7 @@
 # limitations under the License.
 
 # We need to get the version of what we installed earlier
-ohai_reload 'Update package list' do
+ohai 'Update package list' do
   plugin 'packages'
 end
 
@@ -72,7 +72,7 @@ execute 'tsagent setup' do
   sensitive true
   only_if {
     ts_ver = node['packages']['threatstack-agent']['version'].split('.')
-    has_tsagent_info(ts_ver[0],ts_ver[1],ts_ver[2]) ? unregistered_agent? : ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
+    has_tsagent_info(ts_ver[0].to_i,ts_ver[1].to_i,ts_ver[2].to_i) ? unregistered_agent? : ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
   }
   # default to delayed start in case config is needed.
   notifies :start, 'service[threatstack]'
