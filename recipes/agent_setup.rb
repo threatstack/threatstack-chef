@@ -16,6 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# We need to get the version of what we installed earlier
+ohai_reload 'Update package list' do
+  plugin 'packages'
+end
+
 service 'threatstack' do
   supports status: true, restart: true, start: true, stop: true
   if platform?('amazon') && node['platform_version'] != '2'
@@ -55,6 +60,9 @@ unless node['threatstack']['rulesets'].empty?
 end
 
 #### Setup happens here ####
+# If `tsagent info` exists, there's a better way to do this. If it doesnt, then we should
+# rely on the config file's presence. This has to be done lazily since the package might not
+# be installed at the beginning of the chef run.
 execute 'tsagent setup' do
   command cmd
   action :run
@@ -62,7 +70,10 @@ execute 'tsagent setup' do
   timeout 60
   ignore_failure node['threatstack']['ignore_failure']
   sensitive true
-  only_if { ts_down? && stale_agent? }
+  only_if {
+    ts_ver = node['packages']['threatstack-agent']['version'].split('.')
+    has_tsagent_info(ts_ver[0],ts_ver[1],ts_ver[2]) ? unregistered_agent? : ::File.exist?('/opt/threatstack/etc/tsagentd.cfg')
+  }
   # default to delayed start in case config is needed.
   notifies :start, 'service[threatstack]'
 end

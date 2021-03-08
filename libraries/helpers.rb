@@ -16,13 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+def has_tsagent_info(maj, min, patch)
+  return true if (maj >= 2 && min >= 2) || (maj >= 2 && min >= 1 && patch >= 3)
+  false
+end
+
 def ts_down?
   require 'open3'
   stdout, = Open3.capture3('/usr/bin/tsagent status')
   !stdout.include?('UP Threat Stack Backend Connection')
 end
 
-def stale_agent?
+def unregistered_agent?
   require 'open3'
   require 'yaml'
   require 'date'
@@ -30,11 +35,12 @@ def stale_agent?
   stdout.gsub!("\t", '  ')
   tsagent_info = YAML.safe_load(stdout)
 
-  # If it's never been registered, it's stale.
   return true if tsagent_info['LastBackendConnection'] == 'N/A'
 
   # It could be stale if it last connected >24h ago. Would need to get ts_down? to know for sure.
-  return true if (DateTime.now.to_time - tsagent_info['LastBackendConnection']) / 3600 > 24.0
+  # This is an option for folks if they leave machines off for 24h or more, but it might be a better
+  # function for a wrapper cookbook of some sort.
+  #return true if (DateTime.now.to_time - tsagent_info['LastBackendConnection']) / 3600 > 24.0
 
   # Otherwise, it's definitely fresh.
   false
