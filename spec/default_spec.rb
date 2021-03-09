@@ -4,7 +4,6 @@ describe 'threatstack::default' do
   context 'single-ruleset-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['rulesets'] = ['Base Rule Set']
       end.converge(described_recipe)
     end
@@ -24,7 +23,6 @@ describe 'threatstack::default' do
   context '1.x version' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '1.9.0'
         node.normal['threatstack']['rulesets'] = ['Base Rule Set']
         node.normal['threatstack']['version'] = '1.9.0ubuntuBlergh'
       end
@@ -44,7 +42,6 @@ describe 'threatstack::default' do
   context '2.x version' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['rulesets'] = ['Base Rule Set']
         node.normal['threatstack']['version'] = '2.blahblah'
       end
@@ -64,7 +61,6 @@ describe 'threatstack::default' do
   context 'explicit-deploy-key' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'EFGH5678'
         node.normal['threatstack']['rulesets'] = ['Base Rule Set']
       end.converge(described_recipe)
@@ -80,7 +76,6 @@ describe 'threatstack::default' do
   context 'multi-ruleset-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['rulesets'] = ['Base Rule Set', 'CloudTrail Base Rule Set']
       end.converge(described_recipe)
@@ -96,7 +91,6 @@ describe 'threatstack::default' do
   context 'enable-containers' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['enable_containers'] = true
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
@@ -112,7 +106,6 @@ describe 'threatstack::default' do
   context 'dont-enable-containers-when-attr-false' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['enable_containers'] = false
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
@@ -128,7 +121,6 @@ describe 'threatstack::default' do
   context 'dont-enable-containers-when-attr-nil' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['enable_containers'] = nil
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
@@ -145,7 +137,6 @@ describe 'threatstack::default' do
   context 'agent-extra-args' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['agent_config_args'] = ['foo 1', 'bar 1']
       end.converge(described_recipe)
@@ -172,7 +163,6 @@ describe 'threatstack::default' do
   context 'no agent-extra-args' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
     end
@@ -195,7 +185,6 @@ describe 'threatstack::default' do
   context 'install only' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['install_only'] = true
       end.converge(described_recipe)
@@ -223,7 +212,6 @@ describe 'threatstack::default' do
   context 'hostname-test' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['hostname'] = 'test_server-i-abc123'
       end.converge(described_recipe)
@@ -242,7 +230,6 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '16.04'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
     end
@@ -258,7 +245,6 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '18.04'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.0.0'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
         node.normal['threatstack']['version'] = '2.0.0.0ubuntu18.56'
       end.converge(described_recipe)
@@ -275,7 +261,6 @@ describe 'threatstack::default' do
         platform: 'redhat',
         version: '7.4'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end.converge(described_recipe)
     end

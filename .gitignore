@@ -12,6 +12,7 @@
 .rspec
 .yardopts
 Gemfile.lock
+Berksfile.lock
 .bundle/
 .cache/
 .kitchen/
