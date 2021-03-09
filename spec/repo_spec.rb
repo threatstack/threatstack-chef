@@ -8,7 +8,6 @@ describe 'threatstack::default' do
         platform: 'debian',
         version: '8.11'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -31,7 +30,6 @@ describe 'threatstack::default' do
         platform: 'debian',
         version: '9.12'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -54,7 +52,6 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '16.04'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -73,7 +70,6 @@ describe 'threatstack::default' do
         platform: 'ubuntu',
         version: '18.04'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -97,7 +93,6 @@ describe 'threatstack::default' do
         platform: 'redhat',
         version: '7.8'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -126,7 +121,6 @@ describe 'threatstack::default' do
         platform: 'centos',
         version: '7.8.2003'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -151,7 +145,6 @@ describe 'threatstack::default' do
         platform: 'amazon',
         version: '2018.03'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
@@ -176,7 +169,6 @@ describe 'threatstack::default' do
         platform: 'amazon',
         version: '2'
       ) do |node|
-        node.normal['packages']['threatstack-agent']['version'] = '2.3.2'
         node.normal['threatstack']['deploy_key'] = 'ABCD1234'
       end
       runner.converge(described_recipe)
