@@ -4,15 +4,15 @@ driver:
 
 provisioner:
   product_name: chef
-  product_version: 14
+  product_version: 15
 
 platforms:
   - name: amazonlinux-1
     attributes:
       threatstack:
         repo:
-          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/amzn1' : nil %>
-          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/amzn1/repomd.xml.key' : nil %>
+          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/Amazon/1' : nil %>
+          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/Amazon/1/repomd.xml.key' : nil %>
         validate_gpg_key: false  # This is ONLY for test purposes! Don't do this in your actual roles/recipes
     driver_config:
       image: amazonlinux:1
@@ -30,8 +30,8 @@ platforms:
     attributes:
       threatstack:
         repo:
-          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/amzn2' : nil %>
-          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/amzn2/repomd.xml.key' : nil %>
+          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/Amazon/2' : nil %>
+          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/Amazon/2/repomd.xml.key' : nil %>
         validate_gpg_key: false  # This is ONLY for test purposes! Don't do this in your actual roles/recipes
     driver_config:
       image: amazonlinux:2
@@ -45,13 +45,31 @@ platforms:
         - yum install -y audit initscripts
         - sed -i 's/local_events = yes/local_events = no/g' /etc/audit/auditd.conf
         - systemctl enable auditd.service
-    image: centos:7
+  - name: amazonlinux-2-arm
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/Amazon/2' : nil %>
+          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/Amazon/2/repomd.xml.key' : nil %>
+        validate_gpg_key: false  # This is ONLY for test purposes! Don't do this in your actual roles/recipes
+    driver_config:
+      image: arm64v8/amazonlinux:2
+      run_command: /sbin/init
+      privileged: true
+      run_options:
+        env: container=docker
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup
+      provision_command:
+        - yum install -y audit initscripts
+        - sed -i 's/local_events = yes/local_events = no/g' /etc/audit/auditd.conf
+        - systemctl enable auditd.service
   - name: centos-7
     attributes:
       threatstack:
         repo:
-          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el7' : nil %>
-          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el7/repomd.xml.key' : nil %>
+          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/7' : nil %>
+          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/7/repomd.xml.key' : nil %>
         validate_gpg_key: false # This is ONLY for test purposes! Don't do this in your actual roles/recipes
     driver_config:
       image: centos:7
@@ -69,11 +87,30 @@ platforms:
     attributes:
       threatstack:
         repo:
-          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el8' : nil %>
-          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/el8/repomd.xml.key' : nil %>
+          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/8' : nil %>
+          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/8/repomd.xml.key' : nil %>
         validate_gpg_key: false # This is ONLY for test purposes! Don't do this in your actual roles/recipes
     driver_config:
       image: centos:8
+      run_command: /sbin/init
+      privileged: true
+      run_options:
+        env: container=docker
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup
+      provision_command:
+        - yum install -y audit initscripts
+        - sed -i 's/local_events = yes/local_events = no/g' /etc/audit/auditd.conf
+        - systemctl enable auditd.service
+  - name: centos-8-arm
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/8' : nil %>
+          key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/8/repomd.xml.key' : nil %>
+        validate_gpg_key: false # This is ONLY for test purposes! Don't do this in your actual roles/recipes
+    driver_config:
+      image: arm64v8/centos:8
       run_command: /sbin/init
       privileged: true
       run_options:
@@ -104,11 +141,12 @@ platforms:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable ssh.service
   - name: debian-9
-    threatstack:
-      repo:
-        url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
-        key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
-        components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
     driver_config:
       image: debian:9
       run_command: /bin/systemd
@@ -123,11 +161,12 @@ platforms:
         - systemctl enable ssh.service
         - apt install -y gnupg
   - name: debian-10
-    threatstack:
-      repo:
-        url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
-        key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
-        components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
     driver_config:
       image: debian:10
       run_command: /sbin/init
@@ -141,12 +180,33 @@ platforms:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable ssh.service
         - apt install -y gnupg
+  - name: debian-10-arm
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    driver_config:
+      image: arm64v8/debian:10
+      run_command: /sbin/init
+      cap_add:
+        - SYS_ADMIN
+      run_options:
+        env: container=docker
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup
+      provision_command:
+        - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+        - systemctl enable ssh.service
+        - apt install -y gnupg
   - name: ubuntu-16.04
-    threatstack:
-      repo:
-        url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
-        key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
-        components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    attributes:
+       threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
     driver_config:
       image: ubuntu:16.04
       run_command: /sbin/init
@@ -161,11 +221,12 @@ platforms:
         - systemctl enable ssh.service
         - apt install -y gnupg
   - name: ubuntu-18.04
-    threatstack:
-      repo:
-        url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
-        key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
-        components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
     driver_config:
       image: ubuntu:18.04
       run_command: /sbin/init
@@ -179,14 +240,55 @@ platforms:
         - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
         - systemctl enable ssh.service
         - apt install -y gnupg
+  - name: ubuntu-18.04-arm
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    driver_config:
+      image: arm64v8/ubuntu:18.04
+      run_command: /sbin/init
+      cap_add:
+        - SYS_ADMIN
+      run_options:
+        env: container=docker
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup
+      provision_command:
+        - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+        - systemctl enable ssh.service
+        - apt install -y gnupg
   - name: ubuntu-20.04
-    threatstack:
-      repo:
-        url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
-        key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
-        components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
     driver_config:
       image: ubuntu:20.04
+      run_command: /sbin/init
+      cap_add:
+        - SYS_ADMIN
+      run_options:
+        env: container=docker
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup
+      provision_command:
+        - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+        - systemctl enable ssh.service
+        - apt install -y gnupg
+  - name: ubuntu-20.04-arm
+    attributes:
+      threatstack:
+        repo:
+          url: <%= ENV['TS_DEB_REPO_URL'] != nil ? ENV['TS_DEB_REPO_URL']: nil %>
+          key: <%= ENV['TS_DEB_REPO_KEY'] != nil ? ENV['TS_DEB_REPO_KEY'] : nil %>
+          components: <%= ENV['TS_REPO_COMPONENTS'] != nil ? ENV['TS_REPO_COMPONENTS'] : nil %>
+    driver_config:
+      image: arm64v8/ubuntu:20.04
       run_command: /sbin/init
       cap_add:
         - SYS_ADMIN
