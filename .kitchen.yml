@@ -91,7 +91,7 @@ platforms:
           key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/8/repomd.xml.key' : nil %>
         validate_gpg_key: false # This is ONLY for test purposes! Don't do this in your actual roles/recipes
     driver_config:
-      image: centos:8
+      image: quay.io/centos/centos:stream8
       run_command: /sbin/init
       privileged: true
       run_options:
@@ -110,7 +110,7 @@ platforms:
           key_file_uri: <%= ENV['TS_RPM_REPO_URL'] != nil ? ENV['TS_RPM_REPO_URL'] + '/EL/8/repomd.xml.key' : nil %>
         validate_gpg_key: false # This is ONLY for test purposes! Don't do this in your actual roles/recipes
     driver_config:
-      image: arm64v8/centos:8
+      image: quay.io/centos/centos:stream8
       run_command: /sbin/init
       privileged: true
       run_options:
